@@ -1,4 +1,4 @@
-package com.sekomi.janus.services;
+package com.seikomi.janus.services;
 
 import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.tasks.DownloadTask;
