@@ -97,4 +97,9 @@ public class DownloadTask extends JanusTask {
 		return buffer.array();
 	}
 
+	public void addFiles(String[] fileNames) {
+		// TODO Adding files during upload process
+		
+	}
+
 }
