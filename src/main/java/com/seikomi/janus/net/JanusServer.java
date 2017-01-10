@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.seikomi.janus.net.properties.JanusServerProperties;
 import com.seikomi.janus.net.tasks.ConnectTask;
+import com.seikomi.janus.services.ServicesLocatorInitializer;
 
 /**
  * Implementation of a socket server. With the usage of two distinct ports (like
@@ -39,6 +40,10 @@ public class JanusServer {
 	 * Start the Janus server and wait for client connections.
 	 */
 	public void start() {
+		// Load services in ServiceLocator
+		// WARNING : all services you want to use must be loaded
+		ServicesLocatorInitializer.load(this);
+		
 		try {
 			connectTask = new ConnectTask(this);
 

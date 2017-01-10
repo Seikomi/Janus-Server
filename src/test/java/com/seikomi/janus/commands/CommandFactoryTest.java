@@ -3,24 +3,39 @@ package com.seikomi.janus.commands;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.seikomi.janus.commands.CommandFactory;
+import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.net.properties.JanusServerProperties;
+import com.seikomi.janus.net.properties.TestUtils;
 
 public class CommandFactoryTest {
+	private final static URL PROPERTIES_URL = TestUtils.getServerPropertiesURL();
 
 	private CommandFactory commandFactory;
+	private JanusServer server;
+	private JanusServerProperties serverProperties;
 
 	@Before
 	public void setUp() throws Exception {
-		commandFactory = CommandFactory.init();
+		Path serverPropertiePath = Paths.get(PROPERTIES_URL.toURI());
+		serverProperties = new JanusServerProperties(serverPropertiePath);
+		server = new JanusServer(serverProperties);
+		commandFactory = CommandFactory.init(server);
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		commandFactory = null;
+		server = null;
+		serverProperties = null;
 	}
 
 	@Test
@@ -28,7 +43,8 @@ public class CommandFactoryTest {
 		final String commandTestName = "#CMD_TEST";
 		final String[] commandTestReturns = new String[] { "TEST" };
 
-		commandFactory.addCommand(commandTestName, new CommandInterface() {
+		commandFactory.addCommand(commandTestName, new AbstractCommand(server) {
+			
 			@Override
 			public String[] apply(String[] args) {
 				return commandTestReturns;
@@ -47,7 +63,8 @@ public class CommandFactoryTest {
 		final String arg2 = "world";
 		final String[] commandTestReturns = new String[] { "TEST2", arg1, arg2 };
 
-		commandFactory.addCommand(commandTestName, new CommandInterface() {
+		commandFactory.addCommand(commandTestName, new AbstractCommand(server) {
+			
 			@Override
 			public String[] apply(String[] args) {
 				assertEquals(2, args.length);

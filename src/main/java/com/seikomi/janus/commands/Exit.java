@@ -1,5 +1,7 @@
 package com.seikomi.janus.commands;
 
+import com.seikomi.janus.net.JanusServer;
+
 /**
  * Exit command. Just return exit message interpret by the server like
  * interrupting flag.
@@ -7,7 +9,11 @@ package com.seikomi.janus.commands;
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public class Exit implements CommandInterface {
+public class Exit extends AbstractCommand {
+
+	public Exit(JanusServer server) {
+		super(server);
+	}
 
 	@Override
 	public String[] apply(String[] args) {

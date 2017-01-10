@@ -12,8 +12,8 @@ import com.seikomi.janus.commands.CommandFactory;
 import com.seikomi.janus.net.JanusServer;
 
 /**
- * Janus task that handle client command send on the command socket. Before
- * interpret client commands send a welcome message.
+ * Janus task that handle client commands send on the command socket. Send a
+ * welcome message when a client at initailization.
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
@@ -27,9 +27,11 @@ public class TreatmentTask extends JanusTask {
 
 	private DataInputStream in;
 	private DataOutputStream out;
+	
+	private CommandFactory commandFactory;
 
 	/**
-	 * Construct a treatment task associate with a Janus server and link to the
+	 * Construct a treatment task associate with a Janus server and link with the
 	 * command socket of a client. Initialize the I/O stream to communicate with
 	 * the client.
 	 * 
@@ -45,6 +47,8 @@ public class TreatmentTask extends JanusTask {
 		this.commandSocket = commandSocket;
 		this.in = new DataInputStream(commandSocket.getInputStream());
 		this.out = new DataOutputStream(commandSocket.getOutputStream());
+		
+		commandFactory = CommandFactory.init(server);
 	}
 
 	/**
@@ -61,14 +65,14 @@ public class TreatmentTask extends JanusTask {
 	@Override
 	protected void loop() {
 		try {
-			String receivingMessage = this.in.readUTF();
+			String receivingMessage = in.readUTF();
 			if (receivingMessage == null) {
 				endLoop();
 			}
 
 			commandeExecute(receivingMessage);
 		} catch (IOException e) {
-			LOGGER.info("One client is disconnect");
+			LOGGER.info("One client has logged out");
 			LOGGER.trace("STACKTRACE: ", e);
 			endLoop();
 		}
@@ -80,6 +84,7 @@ public class TreatmentTask extends JanusTask {
 	@Override
 	protected void afterLoop() {
 		try {
+			out.close();
 			commandSocket.close();
 		} catch (IOException e) {
 			LOGGER.error("An error occurs during command socket closing", e);
@@ -95,8 +100,6 @@ public class TreatmentTask extends JanusTask {
 	 *            the command message to execute
 	 */
 	private void commandeExecute(String receivingMessage) {
-
-		CommandFactory commandFactory = CommandFactory.init();
 		String[] commandReturnState = commandFactory.executeCommand(receivingMessage);
 		if (commandReturnState == null) {
 			sendMessage(receivingMessage);
@@ -105,7 +108,6 @@ public class TreatmentTask extends JanusTask {
 		} else {
 			sendMessage(commandReturnState[0]);
 		}
-
 	}
 
 	/**
@@ -116,8 +118,8 @@ public class TreatmentTask extends JanusTask {
 	 */
 	private void sendMessage(String message) {
 		try {
-			this.out.writeUTF(message);
-			this.out.flush();
+			out.writeUTF(message);
+			out.flush();
 		} catch (IOException e) {
 			LOGGER.error("An error occurs during the sending of a message to a client", e);
 		}

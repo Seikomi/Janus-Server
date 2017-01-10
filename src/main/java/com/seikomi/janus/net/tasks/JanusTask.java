@@ -3,13 +3,12 @@ package com.seikomi.janus.net.tasks;
 import com.seikomi.janus.net.JanusServer;
 
 /**
- * Abstract class of Janus task, witch is thread that run the procedures
- * described in the three following abstract methods :
+ * Abstract class of Janus task, witch is a thread that run the three following abstract methods :
  * <ul>
- * <li>{@code beforeLoop()}, execute before the {@code loop()} method ;</li>
- * <li>{@code Loop()}, execute until the current thread is interrupted,
- * <i>require blocking instruction to not be an infinite loop</i> ;</li>
- * <li>{@code afterLoop()}, execute after the {@code loop()} method, when the
+ * <li>{@code beforeLoop()}, executes before the {@code loop()} method ;</li>
+ * <li>{@code Loop()}, executes until the current thread is interrupted,
+ * <i>require a blocking instruction to not be an infinite loop</i> ;</li>
+ * <li>{@code afterLoop()}, executes after the {@code loop()} method, when the
  * current thread is interrupt.</li>
  * </ul>
  * 
@@ -22,10 +21,10 @@ public abstract class JanusTask implements Runnable {
 	private volatile Thread currentThread;
 
 	/**
-	 * Instantiate a new runnable Janus task on the server in argument.
+	 * Instantiate a new runnable Janus task with the server in argument.
 	 * 
 	 * @param server
-	 *            the server where the task is run.
+	 *            the server where the task must be run.
 	 */
 	protected JanusTask(JanusServer server) {
 		this.server = server;
@@ -43,19 +42,19 @@ public abstract class JanusTask implements Runnable {
 	}
 
 	/**
-	 * Method execute before the {@code loop()} method.
+	 * Method executes before the {@code loop()} method.
 	 */
 	protected abstract void beforeLoop();
 
 	/**
-	 * Method execute after the {@code loop()} method, when the current thread
+	 * Method executes after the {@code loop()} method, when the current thread
 	 * is interrupt.
 	 */
 	protected abstract void afterLoop();
 
 	/**
 	 * Method that repeat until the current thread is interrupted, note that
-	 * method can be an infinite loop if no blocking method is used.
+	 * method can be an infinite loop if no blocking method is used inside.
 	 */
 	protected abstract void loop();
 

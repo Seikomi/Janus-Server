@@ -3,27 +3,10 @@ package com.seikomi.janus.services;
 import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.tasks.DownloadTask;
 
-public final class DownloadService {
+public final class DownloadService extends AbstractServices {
 
-	private static JanusServer server;
-	private static DownloadService instance;
-
-	private DownloadService() {
-		// Hide the public constructor
-	}
-
-	public static void loadTargedServer(JanusServer server) {
-		DownloadService.server = server;
-	}
-
-	public static synchronized DownloadService getInstance() throws NoServerTargetFoundException {
-		if (server == null) {
-			throw new NoServerTargetFoundException();
-		}
-		if (instance == null) {
-			instance = new DownloadService();
-		}
-		return instance;
+	protected DownloadService(JanusServer server) {
+		super(server);
 	}
 
 	public void send(String[] fileNames) {

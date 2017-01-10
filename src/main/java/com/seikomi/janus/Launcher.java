@@ -27,15 +27,14 @@ public class Launcher {
 	 * 
 	 * @param args the arguments : not require
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		Path propertiesFilePah = Paths.get("server.properties");
 		try {
 			JanusServerProperties serverProperties = new JanusServerProperties(propertiesFilePah);
 			JanusServer server = new JanusServer(serverProperties);
 			server.start();
-
 		} catch (IOException e) {
-			LOGGER.error("An unknown error occurs during the Janus server usage" , e);
+			LOGGER.error("An unknown error occurs during the reading of Janus server properties file" , e);
 		}
 	}
 }

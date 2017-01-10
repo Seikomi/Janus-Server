@@ -3,6 +3,8 @@ package com.seikomi.janus.commands;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import com.seikomi.janus.net.JanusServer;
+
 /**
  * This class is the factory of commands use by Janus server. She stores a set
  * of commands and execute the command ask by a client. This factory <b>need<b/>
@@ -12,25 +14,27 @@ import java.util.StringTokenizer;
  *
  */
 public class CommandFactory {
-	private final HashMap<String, CommandInterface> commands;
+	private final HashMap<String, AbstractCommand> commands;
 
 	/**
 	 * Private constructor call at the initialization of the factory.
 	 */
-	private CommandFactory() {
+	private CommandFactory(JanusServer server) {
 		commands = new HashMap<>();
 	}
 
 	/**
 	 * Initialize the command factory with all commands set in her
 	 * {@code init()} method.
+	 * @param server TODO
 	 * 
 	 * @return the command factory with commands charged
 	 */
-	public static CommandFactory init() {
-		CommandFactory cf = new CommandFactory();
+	public static CommandFactory init(JanusServer server) {
+		CommandFactory cf = new CommandFactory(server);
 
-		cf.addCommand("#EXIT", new Exit());
+		cf.addCommand("#EXIT", new Exit(server));
+		cf.addCommand("#DOWNLOAD", new Download(server));
 
 		return cf;
 	}
@@ -43,7 +47,7 @@ public class CommandFactory {
 	 * @param command
 	 *            the command
 	 */
-	public void addCommand(String name, CommandInterface command) {
+	public void addCommand(String name, AbstractCommand command) {
 		commands.put(name, command);
 	}
 

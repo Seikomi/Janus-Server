@@ -1,7 +1,7 @@
 package com.seikomi.janus.utils;
 
 /**
- * Utils static methods. This methods extends the Java SDK and provide advance
+ * Utilities static methods. This methods extends the Java SDK and provide advance
  * function with high reusability.
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
@@ -47,8 +47,9 @@ public final class Utils {
 			if (i == 0 && string.charAt(i) == '-') {
 				if (string.length() == 1) {
 					isInteger = false;
-				} else
+				} else {
 					continue;
+				}
 			}
 			if (Character.digit(string.charAt(i), radix) < 0) {
 				isInteger = false;

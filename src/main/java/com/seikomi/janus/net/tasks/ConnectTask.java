@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 import com.seikomi.janus.net.JanusServer;
 
 /**
- * Janus task that handle client connection, it is a one-thread-per-client
+ * Janus task that handle all client connection, it is based on one-thread-per-client
  * design. At the instantiation this task create a server socket on command
- * port. Then, when the task is run, wait for connection and each time a client
- * ask for connection, launch a treatment task.
+ * port. Then, she wait for connection and each time a client
+ * ask for connection, launch a treatment task associate with this client.
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  * 
@@ -28,10 +28,10 @@ public class ConnectTask extends JanusTask {
 
 	/**
 	 * Construct a connect task associated with the Janus server in arguments.
-	 * Create a server socket on command port.
+	 * Instantiate a server socket on command port.
 	 * 
 	 * @param server
-	 *            the Janus server
+	 *            the Janus server where the task is running
 	 * @throws IOException
 	 *             if an I/O errors occurs
 	 */
@@ -47,13 +47,13 @@ public class ConnectTask extends JanusTask {
 	}
 
 	/**
-	 * Wait for connection, and launch a treatment task at each client
+	 * Wait for connection, and launch a treatment task for each client
 	 * connection.
 	 */
 	@Override
 	protected void loop() {
 		try {
-			LOGGER.info("Waiting for connect demande...");
+			LOGGER.info("Waiting for connect request...");
 
 			// The method blocks until a connection is made
 			Socket commandSocket = serverCommandSocket.accept();
@@ -75,7 +75,7 @@ public class ConnectTask extends JanusTask {
 	}
 
 	/**
-	 * Restarts all the treatments task associated with one client.
+	 * Restarts all the treatments task associated with all the clients.
 	 */
 	public void restart() {
 		stop();
