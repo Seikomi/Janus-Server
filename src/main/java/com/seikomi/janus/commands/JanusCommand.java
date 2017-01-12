@@ -9,10 +9,10 @@ import com.seikomi.janus.net.JanusServer;
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public abstract class AbstractCommand {
+public abstract class JanusCommand {
 	protected JanusServer server;
 	
-	protected AbstractCommand(JanusServer server) {
+	public JanusCommand(JanusServer server) {
 		this.server = server;
 	}
 

@@ -3,9 +3,9 @@ package com.seikomi.janus.services;
 import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.tasks.DownloadTask;
 
-public final class DownloadService extends AbstractServices {
+public final class DownloadService extends JanusService {
 
-	protected DownloadService(JanusServer server) {
+	public DownloadService(JanusServer server) {
 		super(server);
 	}
 

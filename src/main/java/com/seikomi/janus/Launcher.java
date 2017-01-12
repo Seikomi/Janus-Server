@@ -31,7 +31,7 @@ public class Launcher {
 		Path propertiesFilePah = Paths.get("server.properties");
 		try {
 			JanusServerProperties serverProperties = new JanusServerProperties(propertiesFilePah);
-			JanusServer server = new JanusServer(serverProperties);
+			JanusServer server = new JanusServerInDebug(serverProperties);
 			server.start();
 		} catch (IOException e) {
 			LOGGER.error("An unknown error occurs during the reading of Janus server properties file" , e);
