@@ -32,6 +32,7 @@ public class CommandFactoryTest {
 
 	@After
 	public void tearDown() throws Exception {
+		CommandsFactory.clear();
 		server = null;
 		serverProperties = null;
 	}
