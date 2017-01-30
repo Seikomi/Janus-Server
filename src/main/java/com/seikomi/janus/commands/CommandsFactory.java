@@ -6,8 +6,8 @@ import java.util.StringTokenizer;
 /**
  * This class is the factory of commands use by Janus server. She stores a set
  * of commands and execute the command ask by a client. This factory <b>need<b/>
- * to be initialize before use it by the call of {@code init()} method.
- * TODO Updata JavaDoc comments
+ * to be initialize before use it by the call of {@code init()} method. TODO
+ * Updata JavaDoc comments
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
@@ -18,7 +18,7 @@ public class CommandsFactory {
 	private CommandsFactory() {
 		// Hide the public constructor
 	}
-	
+
 	/**
 	 * Add an external command in the command factory.
 	 * 
@@ -58,7 +58,10 @@ public class CommandsFactory {
 
 		return commandResult;
 	}
-	
+
+	/**
+	 * Clear all commands handle by this factory.
+	 */
 	public static void clear() {
 		commands.clear();
 	}

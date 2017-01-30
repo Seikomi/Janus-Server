@@ -2,7 +2,7 @@
 
 ## Presentation
 
-Welcome on project Janus :a sockets based server running on Java Runtime Environment (above Java 8).
+Welcome on project Janus : a sockets based server running on Java Runtime Environment (above Java 8).
 
 This server use two TCP ports like a FTP server, one for command and the other for data. All it configuration
 is made in a unique `.properties` file.
@@ -15,11 +15,11 @@ before every major release with the constraint to reach a code test coverage ove
 
 The main goal of this project is to be easily extended to a more complex services server with a design oriented on user
 defined commands and inheritance.
-You can see a example of an extension with the project GrooveBerry. (link coming soon)
+You can see a example of an extension with the project GrooveBerry.
 
 ## Installation with Eclipse
 
-* First, clone this repository with `File>Import...>Git>Projects from Git` wizard.
+* First, clone this repository with `File > Import... > Git > Projects from Git` wizard.
 * Choose `Clone URI` and paste the Web URI : `https://github.com/Seikomi/Janus-Server.git`.
 * Enter your Github login and password, and select all branchs of the project.
 * Select the directory when you want to clone the repository on your file system.

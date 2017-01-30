@@ -79,6 +79,7 @@ public class ConnectTask extends JanusTask {
 	 */
 	public void restart() {
 		stop();
+		LOGGER.trace("Restart all tasks on this server instance.");
 		for (TreatmentTask treatmentTask : treatmentTasks) {
 			treatmentTask.run();
 		}
@@ -88,6 +89,7 @@ public class ConnectTask extends JanusTask {
 	 * Stop all the treatments tasks.
 	 */
 	public void stop() {
+		LOGGER.trace("Stop all tasks running on this server instance.");
 		for (TreatmentTask treatmentTask : treatmentTasks) {
 			treatmentTask.endLoop();
 		}

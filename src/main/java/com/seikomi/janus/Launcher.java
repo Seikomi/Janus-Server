@@ -17,24 +17,27 @@ import com.seikomi.janus.net.properties.JanusServerProperties;
  */
 public class Launcher {
 	static final Logger LOGGER = LoggerFactory.getLogger(Launcher.class);
-	
+
 	private Launcher() {
 		// Hide the public constructor.
 	}
-	
+
 	/**
 	 * Starts the Janus server with the {@code server.properties} file.
 	 * 
-	 * @param args the arguments : not require
+	 * @param args
+	 *            the arguments : not require
 	 */
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
 		Path propertiesFilePah = Paths.get("server.properties");
 		try {
 			JanusServerProperties serverProperties = new JanusServerProperties(propertiesFilePah);
 			JanusServer server = new JanusServerInDebug(serverProperties);
 			server.start();
+			LOGGER.info("Janus server started and listening on ports : " + server.getCommandPort() + " for commands and "
+					+ server.getDataPort() + " for data.");
 		} catch (IOException e) {
-			LOGGER.error("An unknown error occurs during the reading of Janus server properties file" , e);
+			LOGGER.error("An unknown error occurs during the reading of Janus server properties file", e);
 		}
 	}
 }
