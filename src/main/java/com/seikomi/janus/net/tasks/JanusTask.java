@@ -26,7 +26,7 @@ public abstract class JanusTask implements Runnable {
 	 * @param server
 	 *            the server where the task must be run.
 	 */
-	protected JanusTask(JanusServer server) {
+	public JanusTask(JanusServer server) {
 		this.server = server;
 	}
 

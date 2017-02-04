@@ -11,7 +11,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.seikomi.janus.commands.CommandFactory;
+import com.seikomi.janus.JanusServerInDebug;
+import com.seikomi.janus.commands.CommandsFactory;
 import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 import com.seikomi.janus.net.properties.TestUtils;
@@ -19,7 +20,6 @@ import com.seikomi.janus.net.properties.TestUtils;
 public class CommandFactoryTest {
 	private final static URL PROPERTIES_URL = TestUtils.getServerPropertiesURL();
 
-	private CommandFactory commandFactory;
 	private JanusServer server;
 	private JanusServerProperties serverProperties;
 
@@ -27,13 +27,12 @@ public class CommandFactoryTest {
 	public void setUp() throws Exception {
 		Path serverPropertiePath = Paths.get(PROPERTIES_URL.toURI());
 		serverProperties = new JanusServerProperties(serverPropertiePath);
-		server = new JanusServer(serverProperties);
-		commandFactory = CommandFactory.init(server);
+		server = new JanusServerInDebug(serverProperties);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		commandFactory = null;
+		CommandsFactory.clear();
 		server = null;
 		serverProperties = null;
 	}
@@ -43,7 +42,7 @@ public class CommandFactoryTest {
 		final String commandTestName = "#CMD_TEST";
 		final String[] commandTestReturns = new String[] { "TEST" };
 
-		commandFactory.addCommand(commandTestName, new AbstractCommand(server) {
+		CommandsFactory.addCommand(commandTestName, new JanusCommand(server) {
 			
 			@Override
 			public String[] apply(String[] args) {
@@ -51,7 +50,7 @@ public class CommandFactoryTest {
 			}
 		});
 
-		String[] returns = commandFactory.executeCommand(commandTestName);
+		String[] returns = CommandsFactory.executeCommand(commandTestName);
 		assertArrayEquals(commandTestReturns, returns);
 
 	}
@@ -63,7 +62,7 @@ public class CommandFactoryTest {
 		final String arg2 = "world";
 		final String[] commandTestReturns = new String[] { "TEST2", arg1, arg2 };
 
-		commandFactory.addCommand(commandTestName, new AbstractCommand(server) {
+		CommandsFactory.addCommand(commandTestName, new JanusCommand(server) {
 			
 			@Override
 			public String[] apply(String[] args) {
@@ -72,7 +71,7 @@ public class CommandFactoryTest {
 			}
 		});
 
-		String[] returns = commandFactory.executeCommand(commandTestName + " " + arg1 + " " + arg2);
+		String[] returns = CommandsFactory.executeCommand(commandTestName + " " + arg1 + " " + arg2);
 		assertArrayEquals(commandTestReturns, returns);
 
 	}

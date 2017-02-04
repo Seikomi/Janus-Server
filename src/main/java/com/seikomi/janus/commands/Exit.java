@@ -9,7 +9,7 @@ import com.seikomi.janus.net.JanusServer;
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public class Exit extends AbstractCommand {
+public class Exit extends JanusCommand {
 
 	public Exit(JanusServer server) {
 		super(server);

@@ -1,18 +1,22 @@
 package com.seikomi.janus.commands;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.seikomi.janus.net.JanusServer;
 
 /**
- * This is the abstract class of commands. If you want to create a new command you
- * must extend this class.
+ * This is the abstract class of commands. If you want to create a new command
+ * you must extend this class.
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public abstract class AbstractCommand {
+public abstract class JanusCommand {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(JanusCommand.class);
 	protected JanusServer server;
-	
-	protected AbstractCommand(JanusServer server) {
+
+	public JanusCommand(JanusServer server) {
 		this.server = server;
 	}
 

@@ -8,7 +8,7 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.seikomi.janus.commands.CommandFactory;
+import com.seikomi.janus.commands.CommandsFactory;
 import com.seikomi.janus.net.JanusServer;
 
 /**
@@ -27,8 +27,6 @@ public class TreatmentTask extends JanusTask {
 
 	private DataInputStream in;
 	private DataOutputStream out;
-	
-	private CommandFactory commandFactory;
 
 	/**
 	 * Construct a treatment task associate with a Janus server and link with the
@@ -47,8 +45,6 @@ public class TreatmentTask extends JanusTask {
 		this.commandSocket = commandSocket;
 		this.in = new DataInputStream(commandSocket.getInputStream());
 		this.out = new DataOutputStream(commandSocket.getOutputStream());
-		
-		commandFactory = CommandFactory.init(server);
 	}
 
 	/**
@@ -100,7 +96,7 @@ public class TreatmentTask extends JanusTask {
 	 *            the command message to execute
 	 */
 	private void commandeExecute(String receivingMessage) {
-		String[] commandReturnState = commandFactory.executeCommand(receivingMessage);
+		String[] commandReturnState = CommandsFactory.executeCommand(receivingMessage);
 		if (commandReturnState == null) {
 			sendMessage(receivingMessage);
 		} else if ("#EXIT OK".equals(commandReturnState[0])) {
