@@ -7,6 +7,10 @@ import com.seikomi.janus.net.JanusServer;
 
 public class ServicesLocator {
 	private static Map<String, AbstractServices> services = new HashMap<>();
+	
+	private ServicesLocator() {
+		// Hide public constructor.
+	}
 
 	protected static void load(AbstractServices service) {
 		String serviceIdentifier = service.getClass().getSimpleName() + "@"
