@@ -1,19 +1,21 @@
 package com.seikomi.janus.commands;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
  * This class is the factory of commands use by Janus server. She stores a set
- * of commands and execute the command ask by a client. This factory <b>need<b/>
- * to be initialize before use it by the call of {@code init()} method. TODO
- * Updata JavaDoc comments
+ * of commands and execute the command ask by a client. This factory need to be
+ * initialize before use it by the call of {@code init()} method. TODO Updata
+ * JavaDoc comments
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
 public class CommandsFactory {
-	private final static HashMap<String, JanusCommand> commands = new HashMap<>();
+	private final static Map<String, JanusCommand> commands = new HashMap<>();
 
 	private CommandsFactory() {
 		// Hide the public constructor
@@ -57,6 +59,15 @@ public class CommandsFactory {
 		}
 
 		return commandResult;
+	}
+
+	/**
+	 * Gets the commands list handle by this factory.
+	 * 
+	 * @return the commands list (unmodifiable)
+	 */
+	public static Map<String, JanusCommand> getCommands() {
+		return Collections.unmodifiableMap(commands);
 	}
 
 	/**

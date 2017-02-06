@@ -34,7 +34,7 @@ public final class Utils {
 	 * @param radix
 	 *            the radix to apply
 	 * @return {@code true} the string {@code s} represent an integer of radix
-	 *         {@code radix, {@code false} otherwise.
+	 *         {@code radix}, {@code false} otherwise.
 	 */
 	public static boolean isInteger(String string, int radix) {
 		boolean isInteger = true;
