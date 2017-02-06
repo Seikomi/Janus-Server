@@ -1,6 +1,7 @@
 package com.seikomi.janus.net;
 
 import java.io.IOException;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import com.seikomi.janus.commands.CommandsFactory;
 import com.seikomi.janus.commands.Download;
 import com.seikomi.janus.commands.Exit;
+import com.seikomi.janus.commands.JanusCommand;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 import com.seikomi.janus.net.tasks.ConnectTask;
 import com.seikomi.janus.services.DownloadService;
+import com.seikomi.janus.services.JanusService;
 import com.seikomi.janus.services.Locator;
 
 /**
@@ -38,27 +41,22 @@ public abstract class JanusServer implements NetworkApp {
 	public JanusServer(JanusServerProperties serverProperties) {
 		this.serverProperties = serverProperties;
 		loadContext();
-		LOGGER.debug("Janus context loaded.");
-		// TODO trace list of commands and services loaded
-	}
-
-	/**
-	 * Start the Janus server and wait for client connections.
-	 */
-	public void start() {
 		loadJanusContext();
 
-		try {
-			connectTask = new ConnectTask(this);
+		LOGGER.debug("Janus context loaded.");
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Commands :");
+			for (Entry<String, JanusCommand> entry : CommandsFactory.getCommands().entrySet()) {
+				LOGGER.trace("\t" + entry.getKey() + " : " + entry.getValue().getClass().getSimpleName());
+			}
+			LOGGER.trace("Service :");
+			for (Entry<String, JanusService> entry : Locator.getServices().entrySet()) {
+				LOGGER.trace("\t" + entry.getKey() + " : " + entry.getValue().getClass().getSimpleName());
+			}
 
-			Thread connectThread = new Thread(connectTask, "ConnectThread");
-			connectThread.start();
-		} catch (IOException e) {
-			LOGGER.error("An unknown error occurs during the starting of Janus server", e);
 		}
-
 	}
-
+	
 	/**
 	 * Load defaults commands and services needed to run properly the Janus
 	 * server.
@@ -68,6 +66,21 @@ public abstract class JanusServer implements NetworkApp {
 		CommandsFactory.addCommand("#DOWNLOAD", new Download(this));
 
 		Locator.load(new DownloadService(this));
+	}
+
+	/**
+	 * Start the Janus server and wait for client connections.
+	 */
+	public void start() {
+		try {
+			connectTask = new ConnectTask(this);
+
+			Thread connectTread = new Thread(connectTask, "ConnectThread");
+			connectTread.start();
+		} catch (IOException e) {
+			LOGGER.error("An unknown error occurs during the starting of Janus server", e);
+		}
+
 	}
 
 	/**

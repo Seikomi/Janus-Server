@@ -19,7 +19,6 @@ public class Download extends JanusCommand {
 
 	@Override
 	public String[] apply(String[] args) {
-		// TODO Auto-generated method stub
 		DownloadService downloadService = Locator.getService(DownloadService.class, server);
 		downloadService.send(args);
 

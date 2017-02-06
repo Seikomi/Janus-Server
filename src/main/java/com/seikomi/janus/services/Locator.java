@@ -1,5 +1,6 @@
 package com.seikomi.janus.services;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +45,8 @@ public class Locator {
 	 * Gets the service instance of the {@code serviceClass} class associated
 	 * with a Janus server.
 	 * 
+	 * @param <T>
+	 *            type extended JanusService
 	 * @param serviceClass
 	 *            the class of the service you want use
 	 * @param associatedJanusServer
@@ -57,7 +60,7 @@ public class Locator {
 
 	/**
 	 * Gets the service of {@code fullServiceName} name. The
-	 * {@code fullServiceName} is an identifier with the following form : <br />
+	 * {@code fullServiceName} is an identifier with the following form :
 	 * [serviceClassName]@[server instance hash code]
 	 * 
 	 * @param fullServiceName
@@ -81,6 +84,15 @@ public class Locator {
 	 */
 	public static JanusService getService(String serviceName, JanusServer associatedJanusServer) {
 		return services.get(serviceName + "@" + Integer.toHexString(associatedJanusServer.hashCode()));
+	}
+
+	/**
+	 * Gets the services list handle by this locator.
+	 * 
+	 * @return the services list (unmodifiable)
+	 */
+	public static Map<String, JanusService> getServices() {
+		return Collections.unmodifiableMap(services);
 	}
 
 	/**
