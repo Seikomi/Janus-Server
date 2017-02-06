@@ -54,7 +54,7 @@ public class DownloadTask extends JanusTask {
 	@Override
 	protected void beforeLoop() {
 		try {
-			dataServerSocket = new ServerSocket(server.getDataPort());
+			dataServerSocket = new ServerSocket(((JanusServer) server).getDataPort());
 			Socket dataSocket = dataServerSocket.accept();
 			out = new BufferedOutputStream(dataSocket.getOutputStream(), BUFFER_SIZE);
 		} catch (IOException e) {

@@ -22,8 +22,8 @@ import com.seikomi.janus.services.Locator;
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public abstract class JanusServer {
-	static final Logger LOGGER = LoggerFactory.getLogger(JanusServer.class);
+public abstract class JanusServer implements NetworkApp {
+	private static final Logger LOGGER = LoggerFactory.getLogger(JanusServer.class);
 
 	private JanusServerProperties serverProperties;
 	private ConnectTask connectTask;
@@ -51,8 +51,8 @@ public abstract class JanusServer {
 		try {
 			connectTask = new ConnectTask(this);
 
-			Thread connectTread = new Thread(connectTask, "ConnectThread");
-			connectTread.start();
+			Thread connectThread = new Thread(connectTask, "ConnectThread");
+			connectThread.start();
 		} catch (IOException e) {
 			LOGGER.error("An unknown error occurs during the starting of Janus server", e);
 		}
