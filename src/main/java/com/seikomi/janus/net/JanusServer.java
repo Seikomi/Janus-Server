@@ -2,6 +2,7 @@ package com.seikomi.janus.net;
 
 import java.io.IOException;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +11,13 @@ import com.seikomi.janus.commands.CommandsFactory;
 import com.seikomi.janus.commands.Download;
 import com.seikomi.janus.commands.Exit;
 import com.seikomi.janus.commands.JanusCommand;
+import com.seikomi.janus.commands.Upload;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 import com.seikomi.janus.net.tasks.ConnectTask;
 import com.seikomi.janus.services.DownloadService;
 import com.seikomi.janus.services.JanusService;
 import com.seikomi.janus.services.Locator;
+import com.seikomi.janus.services.UploadService;
 
 /**
  * Implementation of a socket server. With the usage of two distinct ports (like
@@ -62,8 +65,10 @@ public abstract class JanusServer {
 	private void loadJanusContext() {
 		CommandsFactory.addCommand("#EXIT", new Exit(this));
 		CommandsFactory.addCommand("#DOWNLOAD", new Download(this));
+		CommandsFactory.addCommand("#UPLOAD", new Upload(this));
 
 		Locator.load(new DownloadService(this));
+		Locator.load(new UploadService(this));
 	}
 
 	/**
@@ -128,5 +133,9 @@ public abstract class JanusServer {
 	 */
 	public int getDataPort() {
 		return serverProperties.getDataPort();
+	}
+	
+	public Properties getProperties() {
+		return serverProperties.getProperties();
 	}
 }

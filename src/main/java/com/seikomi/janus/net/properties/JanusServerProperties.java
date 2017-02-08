@@ -121,5 +121,9 @@ public class JanusServerProperties {
 	public int getCommandPort() {
 		return Integer.parseInt(properties.getProperty(JanusServerDefaultProperties.COMMAND_PORT.getPropertyName()));
 	}
+	
+	public Properties getProperties() {
+		return properties;
+	}
 
 }

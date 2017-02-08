@@ -4,21 +4,21 @@ import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.tasks.DataTransfertTask;
 
 /**
- * Download service to handle data transfer between the client and the server.
+ * Upload service to handle data transfer between the client and the server.
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public final class DownloadService extends JanusService {
+public final class UploadService extends JanusService {
 
 	/**
-	 * Create a new instance of the download service by passing in arguments the
+	 * Create a new instance of the upload service by passing in arguments the
 	 * targeted Janus server.
 	 * 
 	 * @param server
 	 *            the targeted server
 	 */
-	public DownloadService(JanusServer server) {
+	public UploadService(JanusServer server) {
 		super(server);
 	}
 
@@ -28,10 +28,10 @@ public final class DownloadService extends JanusService {
 	 * @param fileNames
 	 *            the array of filenames of files to send.
 	 */
-	public void send(String[] fileNames) {
-		DataTransfertTask downloadTask = new DataTransfertTask(server, fileNames, true);
-		Thread downloadThread = new Thread(downloadTask, "downloadThread");
-		downloadThread.start();
+	public void receive(String[] fileNames) {
+		DataTransfertTask uploadTask = new DataTransfertTask(server, fileNames, false);
+		Thread dataTransfertThread = new Thread(uploadTask, "dataTransfertThread");
+		dataTransfertThread.start();
 	}
 
 }
