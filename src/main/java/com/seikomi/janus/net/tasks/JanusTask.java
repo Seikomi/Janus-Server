@@ -1,6 +1,7 @@
 package com.seikomi.janus.net.tasks;
 
 import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.net.NetworkApp;
 
 /**
  * Abstract class of Janus task, witch is a thread that run the three following abstract methods :
@@ -17,17 +18,17 @@ import com.seikomi.janus.net.JanusServer;
  */
 public abstract class JanusTask implements Runnable {
 
-	protected JanusServer server;
+	protected NetworkApp server;
 	private volatile Thread currentThread;
 
 	/**
 	 * Instantiate a new runnable Janus task with the server in argument.
 	 * 
-	 * @param server
-	 *            the server where the task must be run.
+	 * @param networkApp
+	 *            the server where the task must be run. TODO update
 	 */
-	public JanusTask(JanusServer server) {
-		this.server = server;
+	public JanusTask(NetworkApp networkApp) {
+		this.server = networkApp;
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public class ConnectTask extends JanusTask {
 			Socket commandSocket = serverCommandSocket.accept();
 			LOGGER.info("One client is connect");
 
-			TreatmentTask treatmentTask = new TreatmentTask(server, commandSocket);
+			TreatmentTask treatmentTask = new TreatmentTask((JanusServer) server, commandSocket);
 			treatmentTasks.add(treatmentTask);
 			Thread treatmentThread = new Thread(treatmentTask, "treatmentThread");
 			treatmentThread.start();

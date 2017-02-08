@@ -28,8 +28,8 @@ import com.seikomi.janus.services.UploadService;
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public abstract class JanusServer {
-	static final Logger LOGGER = LoggerFactory.getLogger(JanusServer.class);
+public abstract class JanusServer implements NetworkApp {
+	private static final Logger LOGGER = LoggerFactory.getLogger(JanusServer.class);
 
 	private JanusServerProperties serverProperties;
 	private ConnectTask connectTask;
@@ -45,6 +45,7 @@ public abstract class JanusServer {
 		this.serverProperties = serverProperties;
 		loadContext();
 		loadJanusContext();
+
 		LOGGER.debug("Janus context loaded.");
 		if (LOGGER.isTraceEnabled()) {
 			LOGGER.trace("Commands :");
@@ -55,6 +56,7 @@ public abstract class JanusServer {
 			for (Entry<String, JanusService> entry : Locator.getServices().entrySet()) {
 				LOGGER.trace("\t" + entry.getKey() + " : " + entry.getValue().getClass().getSimpleName());
 			}
+
 		}
 	}
 	
