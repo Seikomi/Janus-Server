@@ -59,7 +59,7 @@ public abstract class JanusServer implements NetworkApp {
 
 		}
 	}
-	
+
 	/**
 	 * Load defaults commands and services needed to run properly the Janus
 	 * server.
@@ -136,7 +136,12 @@ public abstract class JanusServer implements NetworkApp {
 	public int getDataPort() {
 		return serverProperties.getDataPort();
 	}
-	
+
+	/**
+	 * Gets the properties file associated with this Janus server.
+	 * 
+	 * @return the properties file
+	 */
 	public Properties getProperties() {
 		return serverProperties.getProperties();
 	}
