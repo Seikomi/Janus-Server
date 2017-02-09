@@ -23,7 +23,7 @@ import com.seikomi.janus.net.JanusServer;
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public class DataTransfertTask extends JanusTask {
+public class DataTransferTask extends JanusTask {
 	static final Logger LOGGER = LoggerFactory.getLogger(ConnectTask.class);
 
 	private static final int BUFFER_SIZE = 1024; // 1 Kio Buffer
@@ -51,7 +51,7 @@ public class DataTransfertTask extends JanusTask {
 	 *            flag to indicate the direction of the data transfer :
 	 *            {@code true} for sending and {@code false} to receiving.
 	 */
-	public DataTransfertTask(JanusServer server, String[] fileNames, boolean isDownloadTransfert) {
+	public DataTransferTask(JanusServer server, String[] fileNames, boolean isDownloadTransfert) {
 		super(server);
 		this.fileNames = fileNames;
 		this.isDownloadTransfert = isDownloadTransfert;

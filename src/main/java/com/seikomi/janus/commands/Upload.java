@@ -1,8 +1,8 @@
 package com.seikomi.janus.commands;
 
 import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.services.DataTranferService;
 import com.seikomi.janus.services.Locator;
-import com.seikomi.janus.services.UploadService;
 
 /**
  * Upload command. Download on the client the files passed in arguments. Return
@@ -19,7 +19,7 @@ public class Upload extends JanusCommand {
 
 	@Override
 	public String[] apply(String[] args) {
-		UploadService downloadService = Locator.getService(UploadService.class, server);
+		DataTranferService downloadService = Locator.getService(DataTranferService.class, server);
 		downloadService.receive(args);
 
 		return new String[] { "#UPLOAD STARTED" };

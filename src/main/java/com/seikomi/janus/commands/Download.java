@@ -1,7 +1,7 @@
 package com.seikomi.janus.commands;
 
 import com.seikomi.janus.net.JanusServer;
-import com.seikomi.janus.services.DownloadService;
+import com.seikomi.janus.services.DataTranferService;
 import com.seikomi.janus.services.Locator;
 
 /**
@@ -19,7 +19,7 @@ public class Download extends JanusCommand {
 
 	@Override
 	public String[] apply(String[] args) {
-		DownloadService downloadService = Locator.getService(DownloadService.class, server);
+		DataTranferService downloadService = Locator.getService(DataTranferService.class, server);
 		downloadService.send(args);
 
 		return new String[] { "#DOWNLOAD STARTED" };
