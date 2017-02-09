@@ -32,10 +32,9 @@ public class DataTranferService extends JanusService {
 	public void send(String[] fileNames) {
 		if (dataTransfertTask == null) {
 			dataTransfertTask = new DataTransferTask(server, fileNames, true);
-			Thread downloadThread = new Thread(dataTransfertTask, "downloadThread");
-			downloadThread.start();
+			startTask();
 		} else {
-			dataTransfertTask.addFiles(fileNames, true); //TODO
+			dataTransfertTask.addFiles(fileNames, true);
 		}
 	}
 	
@@ -48,11 +47,18 @@ public class DataTranferService extends JanusService {
 	public void receive(String[] fileNames) {
 		if (dataTransfertTask == null) {
 			dataTransfertTask = new DataTransferTask(server, fileNames, false);
-			Thread dataTransfertThread = new Thread(dataTransfertTask, "dataTransfertThread");
-			dataTransfertThread.start();
+			startTask();
 		} else {
-			dataTransfertTask.addFiles(fileNames, false); //TODO
+			dataTransfertTask.addFiles(fileNames, false);
 		}
+	}
+	
+	/**
+	 * Starts the data transfert task.
+	 */
+	private void startTask() {
+		Thread downloadThread = new Thread(dataTransfertTask, "dataTransfertThread");
+		downloadThread.start();
 	}
 
 }

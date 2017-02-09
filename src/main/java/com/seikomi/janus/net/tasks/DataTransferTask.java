@@ -9,16 +9,20 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.Deque;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.utils.Utils.Pair;
 
 /**
  * Janus task to handle files transmission between a server and a client. This
  * task open the data port, sends and receives files and close the data port
  * when the task is finish.
+ * 
+ * TODO Update javadoc with the deque collection explanation
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
@@ -33,10 +37,7 @@ public class DataTransferTask extends JanusTask {
 	private BufferedOutputStream out;
 	private BufferedInputStream in;
 
-	private String[] fileNames;
-	private int fileIndex;
-
-	private boolean isDownloadTransfert;
+	private Deque<Pair<String, Boolean>> filesDeque;
 
 	/**
 	 * Construct a data transfert task associated with the Janus server to send
@@ -53,8 +54,10 @@ public class DataTransferTask extends JanusTask {
 	 */
 	public DataTransferTask(JanusServer server, String[] fileNames, boolean isDownloadTransfert) {
 		super(server);
-		this.fileNames = fileNames;
-		this.isDownloadTransfert = isDownloadTransfert;
+		
+		for (int i = 0; i < fileNames.length; i++) {
+			this.filesDeque.push(new Pair<String, Boolean>(fileNames[i], isDownloadTransfert));
+		}
 	}
 
 	/**
@@ -70,7 +73,6 @@ public class DataTransferTask extends JanusTask {
 		} catch (IOException e) {
 			LOGGER.error("An error occurs during initialization of data transmission", e);
 		}
-		fileIndex = 0;
 	}
 
 	/**
@@ -79,19 +81,18 @@ public class DataTransferTask extends JanusTask {
 	 */
 	@Override
 	protected void loop() {
-		if (fileIndex < fileNames.length) {
-			String fileName = fileNames[fileIndex];
-			if (isDownloadTransfert) {
-				File fileToSend = new File(fileName);
+		if (!filesDeque.isEmpty()) {
+			Pair<String, Boolean> file = filesDeque.pop();
+			if (file.getRight()) {
+				File fileToSend = new File(file.getLeft());
 				if (fileToSend.exists()) {
-					sendFile(fileName);
+					sendFile(fileToSend);
 				} else {
-					LOGGER.debug(fileName + " not found");
+					LOGGER.debug(file + " not found");
 				}
 			} else {
-				receiveFile(fileName);
+				receiveFile(file.getLeft());
 			}
-			fileIndex++;
 		} else {
 			endLoop();
 		}
@@ -115,14 +116,13 @@ public class DataTransferTask extends JanusTask {
 	 * in binary with the following format :
 	 * {@code [filelength on 8 bytes (LONG)] + [data]}.
 	 * 
-	 * @param path
+	 * @param fileToSend
 	 *            the file path
 	 */
-	private void sendFile(String path) {
-		File file = new File(path);
-		try (final BufferedInputStream in = new BufferedInputStream(new FileInputStream(file), BUFFER_SIZE)) {
+	private void sendFile(File fileToSend) {
+		try (final BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileToSend), BUFFER_SIZE)) {
 			// Header (file length)
-			byte[] header = longToBytes(file.length());
+			byte[] header = longToBytes(fileToSend.length());
 			out.write(header);
 
 			// Data
@@ -179,7 +179,6 @@ public class DataTransferTask extends JanusTask {
 		} catch (IOException e) {
 			LOGGER.error("An error occurs during the reception of data", e);
 		}
-
 	}
 
 	/**
@@ -201,7 +200,8 @@ public class DataTransferTask extends JanusTask {
 	}
 
 	public void addFiles(String[] fileNames, boolean isDownloadTransfert) {
-		// TODO Adding files during upload process
-
+		for (int i = 0; i < fileNames.length; i++) {
+			filesDeque.push(new Pair<String, Boolean>(fileNames[i], isDownloadTransfert));
+		}
 	}
 }
