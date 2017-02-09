@@ -14,9 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.seikomi.janus.net.JanusServer;
-import com.seikomi.janus.services.JanusService;
 
-
+/**
+ * Janus task to handle files transmission between a server and a client. This
+ * task open the data port, sends and receives files and close the data port
+ * when the task is finish.
+ * 
+ * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
+ *
+ */
 public class DataTransfertTask extends JanusTask {
 	static final Logger LOGGER = LoggerFactory.getLogger(ConnectTask.class);
 
@@ -32,12 +38,28 @@ public class DataTransfertTask extends JanusTask {
 
 	private boolean isDownloadTransfert;
 
+	/**
+	 * Construct a data transfert task associated with the Janus server to send
+	 * the files referenced by their file names if {@code isDownloadTransfert}
+	 * is {@code true}, receive the files otherwise.
+	 * 
+	 * @param server
+	 *            the Janus server
+	 * @param fileNames
+	 *            an array of file names of files to transmit
+	 * @param isDownloadTransfert
+	 *            flag to indicate the direction of the data transfer :
+	 *            {@code true} for sending and {@code false} to receiving.
+	 */
 	public DataTransfertTask(JanusServer server, String[] fileNames, boolean isDownloadTransfert) {
 		super(server);
 		this.fileNames = fileNames;
 		this.isDownloadTransfert = isDownloadTransfert;
 	}
 
+	/**
+	 * Open the data port and wait for connection.
+	 */
 	@Override
 	protected void beforeLoop() {
 		try {
@@ -51,6 +73,10 @@ public class DataTransfertTask extends JanusTask {
 		fileIndex = 0;
 	}
 
+	/**
+	 * Sends each files if they exists on file system or receive files from a
+	 * client.
+	 */
 	@Override
 	protected void loop() {
 		if (fileIndex < fileNames.length) {
@@ -69,9 +95,11 @@ public class DataTransfertTask extends JanusTask {
 		} else {
 			endLoop();
 		}
-
 	}
 
+	/**
+	 * Close the data port when all files has been send or receive.
+	 */
 	@Override
 	protected void afterLoop() {
 		try {
@@ -82,6 +110,14 @@ public class DataTransfertTask extends JanusTask {
 		}
 	}
 
+	/**
+	 * Sends the file locate to {@code path} on file system on data port channel
+	 * in binary with the following format :
+	 * {@code [filelength on 8 bytes (LONG)] + [data]}.
+	 * 
+	 * @param path
+	 *            the file path
+	 */
 	private void sendFile(String path) {
 		File file = new File(path);
 		try (final BufferedInputStream in = new BufferedInputStream(new FileInputStream(file), BUFFER_SIZE)) {
@@ -105,6 +141,15 @@ public class DataTransfertTask extends JanusTask {
 		}
 	}
 
+	/**
+	 * Receives the file from a client and write it on the file system in the
+	 * directory referenced by the {@code serverFileRootDirectory} property. The
+	 * data stream from the client must be on the following format :
+	 * {@code [filelength on 8 bytes (LONG)] + [data]}.
+	 * 
+	 * @param path
+	 *            the file path
+	 */
 	private void receiveFile(String path) {
 		String directory = ((JanusServer) server).getProperties().getProperty("serverFileRootDirectory");
 		File file = new File(directory + path);
@@ -137,6 +182,13 @@ public class DataTransfertTask extends JanusTask {
 
 	}
 
+	/**
+	 * Converts a {@code long} variable in the corresponding array of bytes.
+	 * 
+	 * @param i
+	 *            the {@code long} variable to convert.
+	 * @return the corresponding array of bytes (8 bytes)
+	 */
 	private long bytesToLong(byte[] b) {
 		ByteBuffer buffer = ByteBuffer.wrap(b);
 		return buffer.getLong();
@@ -148,4 +200,8 @@ public class DataTransfertTask extends JanusTask {
 		return buffer.array();
 	}
 
+	public void addFiles(String[] fileNames, boolean isDownloadTransfert) {
+		// TODO Adding files during upload process
+
+	}
 }
