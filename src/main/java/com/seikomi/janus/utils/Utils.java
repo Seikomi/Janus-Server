@@ -1,8 +1,8 @@
 package com.seikomi.janus.utils;
 
 /**
- * Utilities static methods. This methods extends the Java SDK and provide advance
- * function with high reusability.
+ * Utilities static methods. This methods extends the Java SDK and provide
+ * advance function with high reusability.
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
@@ -58,31 +58,46 @@ public final class Utils {
 
 		return isInteger;
 	}
-	
-	public static class Pair<L,R> {
 
-		  private final L left;
-		  private final R right;
+	/**
+	 * Binary type.
+	 * 
+	 * @param <L>
+	 *            left assignment type
+	 * @param <R>
+	 *            right assignment type
+	 */
+	public static class Pair<L, R> {
 
-		  public Pair(L left, R right) {
-		    this.left = left;
-		    this.right = right;
-		  }
+		private final L left;
+		private final R right;
 
-		  public L getLeft() { return left; }
-		  public R getRight() { return right; }
-
-		  @Override
-		  public int hashCode() { return left.hashCode() ^ right.hashCode(); }
-
-		  @Override
-		  public boolean equals(Object o) {
-		    if (!(o instanceof Pair)) return false;
-		    Pair pairo = (Pair) o;
-		    return this.left.equals(pairo.getLeft()) &&
-		           this.right.equals(pairo.getRight());
-		  }
-
+		public Pair(L left, R right) {
+			this.left = left;
+			this.right = right;
 		}
+
+		public L getLeft() {
+			return left;
+		}
+
+		public R getRight() {
+			return right;
+		}
+
+		@Override
+		public int hashCode() {
+			return left.hashCode() ^ right.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof Pair<?, ?>))
+				return false;
+			Pair<?, ?> pairo = (Pair<?, ?>) o;
+			return this.left.equals(pairo.getLeft()) && this.right.equals(pairo.getRight());
+		}
+
+	}
 
 }

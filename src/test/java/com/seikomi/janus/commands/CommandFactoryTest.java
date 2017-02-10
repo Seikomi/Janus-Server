@@ -3,6 +3,8 @@ package com.seikomi.janus.commands;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.seikomi.janus.JanusServerInDebug;
-import com.seikomi.janus.commands.CommandsFactory;
 import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 import com.seikomi.janus.net.properties.TestUtils;
@@ -37,13 +38,20 @@ public class CommandFactoryTest {
 		serverProperties = null;
 	}
 
+	@Test(expected = InvocationTargetException.class)
+	public void testPrivateConstructor() throws Exception {
+		Constructor<CommandsFactory> constructor = CommandsFactory.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance();
+	}
+
 	@Test
 	public void testAddCommandWithNoArgs() {
 		final String commandTestName = "#CMD_TEST";
 		final String[] commandTestReturns = new String[] { "TEST" };
 
 		CommandsFactory.addCommand(commandTestName, new JanusCommand(server) {
-			
+
 			@Override
 			public String[] apply(String[] args) {
 				return commandTestReturns;
@@ -63,7 +71,7 @@ public class CommandFactoryTest {
 		final String[] commandTestReturns = new String[] { "TEST2", arg1, arg2 };
 
 		CommandsFactory.addCommand(commandTestName, new JanusCommand(server) {
-			
+
 			@Override
 			public String[] apply(String[] args) {
 				assertEquals(2, args.length);

@@ -1,6 +1,5 @@
 package com.seikomi.janus.net.tasks;
 
-import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.NetworkApp;
 
 /**

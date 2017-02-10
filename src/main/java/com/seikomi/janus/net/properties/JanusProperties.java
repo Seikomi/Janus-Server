@@ -12,25 +12,25 @@ import java.util.Properties;
 import com.seikomi.janus.utils.Utils;
 
 /**
- * This class is the main set of properties use to initialize a Janus application.
- * It is link to a {@code Properties} class, provide automatic properties file
- * creation on file system and check if the properties set in the file are the
- * one expected by the server and give direct access on property with a type
- * conversion.
+ * This class is the main set of properties use to initialize a Janus
+ * application. It is link to a {@code Properties} class, provide automatic
+ * properties file creation on file system and check if the properties set in
+ * the file are the one expected by the server and give direct access on
+ * property with a type conversion.
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
 public class JanusProperties {
-	
+
 	/** The {@code Properties} instance use to store application properties. */
 	private Properties properties;
 
 	/**
-	 * Create a new instance of Janus application properties file with the properties
-	 * set in the file at the {@code propertiesFilePath}. If it doesn't exist,
-	 * create a new file and set the properties to her default values described
-	 * in {@link JanusDefaultProperties}.
+	 * Create a new instance of Janus application properties file with the
+	 * properties set in the file at the {@code propertiesFilePath}. If it
+	 * doesn't exist, create a new file and set the properties to her default
+	 * values described in JanusDefaultProperties.
 	 * 
 	 * @param propertiesFilePath
 	 *            the properties file path
@@ -48,7 +48,7 @@ public class JanusProperties {
 
 		readProperties(propertiesFile);
 	}
-	
+
 	/**
 	 * Create the properties file on file system with default values.
 	 * 
@@ -86,10 +86,12 @@ public class JanusProperties {
 		}
 
 	}
-	
+
 	/**
 	 * Check if the properties file is well formed.
-	 * @return {@code true} if all properties is well formed, {@code false} otherwise.
+	 * 
+	 * @return {@code true} if all properties is well formed, {@code false}
+	 *         otherwise.
 	 */
 	private boolean isValid() {
 		boolean valid = true;
@@ -97,37 +99,50 @@ public class JanusProperties {
 		for (JanusDefaultProperties defaultProperty : JanusDefaultProperties.values()) {
 			String propertyName = defaultProperty.getPropertyName();
 			String property = properties.getProperty(propertyName);
-			
+
 			boolean containsKeys = properties.containsKey(propertyName);
 			boolean isInteger = Utils.isInteger(property);
 			boolean isString = property != null && !property.isEmpty();
 
-			valid = containsKeys && (isInteger || isString);
+			switch (defaultProperty) {
+			case COMMAND_PORT:
+			case DATA_PORT:
+				valid &= containsKeys && isInteger;
+				break;
+
+			default:
+				valid &= containsKeys && isString;
+				break;
+			}
+
 		}
 
 		return valid;
 	}
-	
+
 	/**
 	 * Gets the data port set in the properties file.
+	 * 
 	 * @return the data port
 	 */
 	public int getDataPort() {
 		return Integer.parseInt(properties.getProperty(JanusDefaultProperties.DATA_PORT.getPropertyName()));
 
 	}
-	
+
 	/**
 	 * Gets the command port set in the properties file.
+	 * 
 	 * @return the command port
 	 */
 	public int getCommandPort() {
 		return Integer.parseInt(properties.getProperty(JanusDefaultProperties.COMMAND_PORT.getPropertyName()));
 	}
-	
+
 	/**
 	 * Gets the properties file
-	 * @return
+	 * 
+	 * @return the properties file
 	 */
 	public Properties getProperties() {
 		return properties;
