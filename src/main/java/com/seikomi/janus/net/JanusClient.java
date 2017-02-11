@@ -40,5 +40,9 @@ public class JanusClient implements NetworkApp {
 		// TODO
 	}
 	
+	public static void main(String[] args) {
+		JanusClient client = new JanusClient(null);
+		client.start();
+	}
 
 }

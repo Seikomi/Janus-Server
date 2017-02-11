@@ -1,5 +1,7 @@
 package com.seikomi.janus.utils;
 
+import java.nio.ByteBuffer;
+
 /**
  * Utilities static methods. This methods extends the Java SDK and provide advance
  * function with high reusability.
@@ -57,6 +59,17 @@ public final class Utils {
 		}
 
 		return isInteger;
+	}
+	
+	/**
+	 * Converts a {@code long} variable in the corresponding array of bytes.
+	 * @param i the {@code long} variable to convert.
+	 * @return the corresponding array of bytes (8 bytes)
+	 */
+	public static byte[] longToBytes(long i) {
+		ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+		buffer.putLong(i);
+		return buffer.array();
 	}
 
 }

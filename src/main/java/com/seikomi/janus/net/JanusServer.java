@@ -77,6 +77,7 @@ public abstract class JanusServer implements NetworkApp {
 
 			Thread connectTread = new Thread(connectTask, "ConnectThread");
 			connectTread.start();
+			
 		} catch (IOException e) {
 			LOGGER.error("An unknown error occurs during the starting of Janus server", e);
 		}
@@ -130,5 +131,9 @@ public abstract class JanusServer implements NetworkApp {
 	 */
 	public int getDataPort() {
 		return serverProperties.getDataPort();
+	}
+	
+	public JanusServerProperties getServerProperties() {
+		return serverProperties;
 	}
 }
