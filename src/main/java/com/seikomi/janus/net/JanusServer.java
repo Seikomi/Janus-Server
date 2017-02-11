@@ -2,6 +2,7 @@ package com.seikomi.janus.net;
 
 import java.io.IOException;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +11,10 @@ import com.seikomi.janus.commands.CommandsFactory;
 import com.seikomi.janus.commands.Download;
 import com.seikomi.janus.commands.Exit;
 import com.seikomi.janus.commands.JanusCommand;
+import com.seikomi.janus.commands.Upload;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 import com.seikomi.janus.net.tasks.ConnectTask;
-import com.seikomi.janus.services.DownloadService;
+import com.seikomi.janus.services.DataTranferService;
 import com.seikomi.janus.services.JanusService;
 import com.seikomi.janus.services.Locator;
 
@@ -56,7 +58,7 @@ public abstract class JanusServer implements NetworkApp {
 
 		}
 	}
-	
+
 	/**
 	 * Load defaults commands and services needed to run properly the Janus
 	 * server.
@@ -64,8 +66,9 @@ public abstract class JanusServer implements NetworkApp {
 	private void loadJanusContext() {
 		CommandsFactory.addCommand("#EXIT", new Exit(this));
 		CommandsFactory.addCommand("#DOWNLOAD", new Download(this));
+		CommandsFactory.addCommand("#UPLOAD", new Upload(this));
 
-		Locator.load(new DownloadService(this));
+		Locator.load(new DataTranferService(this));
 	}
 
 	/**
@@ -132,8 +135,13 @@ public abstract class JanusServer implements NetworkApp {
 	public int getDataPort() {
 		return serverProperties.getDataPort();
 	}
-	
-	public JanusServerProperties getServerProperties() {
-		return serverProperties;
+
+	/**
+	 * Gets the properties file associated with this Janus server.
+	 * 
+	 * @return the properties file
+	 */
+	public Properties getProperties() {
+		return serverProperties.getProperties();
 	}
 }

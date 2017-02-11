@@ -20,8 +20,8 @@ public class JanusServerPropertiesTest {
 	private final static URL PROPERTIES_MALFORMED_01_URL = TestUtils.getURL(JanusServerPropertiesTest.class,
 			"serverTestMalformed.properties");
 
-	private static final int DATA_PORT_EXPECTED = JanusServerDefaultProperties.DATA_PORT.getPropertyValueAsInt();
-	private static final int COMMAND_PORT_EXPECTED = JanusServerDefaultProperties.COMMAND_PORT.getPropertyValueAsInt();
+	private static final int DATA_PORT_EXPECTED = JanusDefaultProperties.DATA_PORT.getPropertyValueAsInt();
+	private static final int COMMAND_PORT_EXPECTED = JanusDefaultProperties.COMMAND_PORT.getPropertyValueAsInt();
 
 	private JanusServerProperties serverProperties;
 

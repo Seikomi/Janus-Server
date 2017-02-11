@@ -19,6 +19,7 @@ public class CommandsFactory {
 
 	private CommandsFactory() {
 		// Hide the public constructor
+		throw new UnsupportedOperationException();
 	}
 
 	/**
