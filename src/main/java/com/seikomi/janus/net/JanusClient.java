@@ -32,6 +32,7 @@ public class JanusClient implements NetworkApp {
 	/**
 	 * Start the Janus client and ask for connection to the server.
 	 */
+	@Override
 	public void start() {
 		askConnectionTask = new AskConnectionTask(this);
 
@@ -42,20 +43,36 @@ public class JanusClient implements NetworkApp {
 	/**
 	 * Restart the Janus client.
 	 */
+	@Override
 	public void restart() {
-		// TODO
+		if (askConnectionTask != null) {
+			askConnectionTask.restart();
+			LOGGER.info("Ask connection task has been restart.");
+		} else {
+			LOGGER.error("Ask connection task not running : start first before restart");
+		}
 	}
 
 	/**
 	 * Stop the Janus client, close all associated sockets.
 	 */
+	@Override
 	public void stop() {
-		// TODO
+		if (askConnectionTask != null) {
+			askConnectionTask.stop();
+			LOGGER.info("Janus client has been stop.");
+		} else {
+			LOGGER.error("Ask connection not running : start first before stop");
+		}
 	}
-	
-	public static void main(String[] args) {
-		JanusClient client = new JanusClient(null);
-		client.start();
+
+	/**
+	 * Gets the command port in the client properties files.
+	 * 
+	 * @return the command port
+	 */
+	public int getCommandPort() {
+		return 3008;
 	}
 
 }

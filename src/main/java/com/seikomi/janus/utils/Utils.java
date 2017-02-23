@@ -63,6 +63,18 @@ public final class Utils {
 	
 	/**
 	 * Converts a {@code long} variable in the corresponding array of bytes.
+	 * 
+	 * @param i
+	 *            the {@code long} variable to convert.
+	 * @return the corresponding array of bytes (8 bytes)
+	 */
+	public static long bytesToLong(byte[] b) {
+		ByteBuffer buffer = ByteBuffer.wrap(b);
+		return buffer.getLong();
+	}
+	
+	/**
+	 * Converts a {@code long} variable in the corresponding array of bytes.
 	 * @param i the {@code long} variable to convert.
 	 * @return the corresponding array of bytes (8 bytes)
 	 */

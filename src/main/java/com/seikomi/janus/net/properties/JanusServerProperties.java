@@ -31,9 +31,4 @@ public class JanusServerProperties extends JanusProperties {
 	public JanusServerProperties(Path propertiesFilePath) throws IOException {
 		super(propertiesFilePath);
 	}
-	
-	public Properties getProperties() {
-		return properties;
-	}
-
 }

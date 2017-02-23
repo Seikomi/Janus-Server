@@ -8,14 +8,13 @@ import java.util.StringTokenizer;
 /**
  * This class is the factory of commands use by Janus server. She stores a set
  * of commands and execute the command ask by a client. This factory need to be
- * initialize before use it by the call of {@code init()} method. TODO Updata
- * JavaDoc comments
+ * initialize before use it by the call of {@code init()} method.
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
 public class CommandsFactory {
-	private final static Map<String, JanusCommand> commands = new HashMap<>();
+	private static final  Map<String, JanusCommand> commands = new HashMap<>();
 
 	private CommandsFactory() {
 		// Hide the public constructor

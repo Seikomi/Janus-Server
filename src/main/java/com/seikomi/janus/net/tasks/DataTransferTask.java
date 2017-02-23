@@ -8,13 +8,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 import java.util.Deque;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.utils.Utils;
 import com.seikomi.janus.utils.Utils.Pair;
 
 /**
@@ -22,7 +22,8 @@ import com.seikomi.janus.utils.Utils.Pair;
  * task open the data port, sends and receives files and close the data port
  * when the task is finish.
  * 
- * TODO Update javadoc with the deque collection explanation
+ * This task use a Deque structure read in FIFO to handle addition of file to
+ * receive or send during a transfer already in progress.
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
@@ -54,7 +55,7 @@ public class DataTransferTask extends JanusTask {
 	 */
 	public DataTransferTask(JanusServer server, String[] fileNames, boolean isDownloadTransfert) {
 		super(server);
-		
+
 		for (int i = 0; i < fileNames.length; i++) {
 			this.filesDeque.push(new Pair<String, Boolean>(fileNames[i], isDownloadTransfert));
 		}
@@ -66,7 +67,7 @@ public class DataTransferTask extends JanusTask {
 	@Override
 	protected void beforeLoop() {
 		try {
-			dataServerSocket = new ServerSocket(((JanusServer) server).getDataPort());
+			dataServerSocket = new ServerSocket(((JanusServer) networkApp).getDataPort());
 			Socket dataSocket = dataServerSocket.accept();
 			out = new BufferedOutputStream(dataSocket.getOutputStream(), BUFFER_SIZE);
 			in = new BufferedInputStream(dataSocket.getInputStream(), BUFFER_SIZE);
@@ -120,16 +121,17 @@ public class DataTransferTask extends JanusTask {
 	 *            the file path
 	 */
 	private void sendFile(File fileToSend) {
-		try (final BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileToSend), BUFFER_SIZE)) {
+		try (final BufferedInputStream fileInputStream = new BufferedInputStream(new FileInputStream(fileToSend),
+				BUFFER_SIZE)) {
 			// Header (file length)
-			byte[] header = longToBytes(fileToSend.length());
+			byte[] header = Utils.longToBytes(fileToSend.length());
 			out.write(header);
 
 			// Data
 			byte[] bytes = new byte[BUFFER_SIZE];
 			int numberOfByteRead;
 			do {
-				numberOfByteRead = in.read(bytes);
+				numberOfByteRead = fileInputStream.read(bytes);
 				if (numberOfByteRead != -1) {
 					out.write(bytes, 0, numberOfByteRead);
 				}
@@ -151,14 +153,15 @@ public class DataTransferTask extends JanusTask {
 	 *            the file path
 	 */
 	private void receiveFile(String path) {
-		String directory = ((JanusServer) server).getProperties().getProperty("serverFileRootDirectory");
+		String directory = ((JanusServer) networkApp).getProperties().getProperty("serverFileRootDirectory");
 		File file = new File(directory + path);
 
-		try (final BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file), BUFFER_SIZE)) {
+		try (final BufferedOutputStream fileOutputStream = new BufferedOutputStream(new FileOutputStream(file),
+				BUFFER_SIZE)) {
 			// Header (file length)
 			byte[] header = new byte[Long.BYTES];
 			in.read(header, 0, header.length);
-			long fileLenth = bytesToLong(header);
+			long fileLenth = Utils.bytesToLong(header);
 
 			// Data
 			byte[] bytes = new byte[BUFFER_SIZE];
@@ -173,30 +176,12 @@ public class DataTransferTask extends JanusTask {
 					in.read(bytes, 0, numberOfBytesToReadRemaining);
 					numberOfByteRead += numberOfBytesToReadRemaining;
 				}
-				out.write(bytes);
-				out.flush();
+				fileOutputStream.write(bytes);
+				fileOutputStream.flush();
 			} while (numberOfByteRead < fileLenth);
 		} catch (IOException e) {
 			LOGGER.error("An error occurs during the reception of data", e);
 		}
-	}
-
-	/**
-	 * Converts a {@code long} variable in the corresponding array of bytes.
-	 * 
-	 * @param i
-	 *            the {@code long} variable to convert.
-	 * @return the corresponding array of bytes (8 bytes)
-	 */
-	private long bytesToLong(byte[] b) {
-		ByteBuffer buffer = ByteBuffer.wrap(b);
-		return buffer.getLong();
-	}
-
-	public byte[] longToBytes(long i) {
-		ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-		buffer.putLong(i);
-		return buffer.array();
 	}
 
 	public void addFiles(String[] fileNames, boolean isDownloadTransfert) {

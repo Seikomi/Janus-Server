@@ -74,6 +74,7 @@ public abstract class JanusServer implements NetworkApp {
 	/**
 	 * Start the Janus server and wait for client connections.
 	 */
+	@Override
 	public void start() {
 		try {
 			connectTask = new ConnectTask(this);
@@ -90,6 +91,7 @@ public abstract class JanusServer implements NetworkApp {
 	/**
 	 * Restart the Janus server.
 	 */
+	@Override
 	public void restart() {
 		if (connectTask != null) {
 			connectTask.restart();
@@ -102,6 +104,7 @@ public abstract class JanusServer implements NetworkApp {
 	/**
 	 * Stop the Janus server, close all associated sockets.
 	 */
+	@Override
 	public void stop() {
 		if (connectTask != null) {
 			connectTask.stop();

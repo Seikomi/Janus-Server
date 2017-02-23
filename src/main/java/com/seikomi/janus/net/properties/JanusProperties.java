@@ -116,6 +116,8 @@ public class JanusProperties {
 			}
 
 		}
+		
+		// TODO Test user properties
 
 		return valid;
 	}

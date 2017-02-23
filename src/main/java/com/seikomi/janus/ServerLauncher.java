@@ -15,10 +15,10 @@ import com.seikomi.janus.net.properties.JanusServerProperties;
  * 
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  */
-public class Launcher {
-	static final Logger LOGGER = LoggerFactory.getLogger(Launcher.class);
+public class ServerLauncher {
+	static final Logger LOGGER = LoggerFactory.getLogger(ServerLauncher.class);
 
-	private Launcher() {
+	private ServerLauncher() {
 		// Hide the public constructor.
 	}
 

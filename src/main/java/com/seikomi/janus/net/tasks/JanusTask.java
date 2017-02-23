@@ -17,17 +17,17 @@ import com.seikomi.janus.net.NetworkApp;
  */
 public abstract class JanusTask implements Runnable {
 
-	protected NetworkApp server;
+	protected NetworkApp networkApp;
 	private volatile Thread currentThread;
 
 	/**
 	 * Instantiate a new runnable Janus task with the server in argument.
 	 * 
 	 * @param networkApp
-	 *            the server where the task must be run. TODO update
+	 *            the network application where the task must be run.
 	 */
 	public JanusTask(NetworkApp networkApp) {
-		this.server = networkApp;
+		this.networkApp = networkApp;
 	}
 
 	@Override
