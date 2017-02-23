@@ -16,7 +16,7 @@ import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.JanusServerTest;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 
-public class ServiceLocatorTest {
+public class LocatorTest {
 	private final static URL PROPERTIES_URL = JanusServerTest.class.getResource("serverTest.properties");
 
 	private JanusServer server;
@@ -50,12 +50,12 @@ public class ServiceLocatorTest {
 	@Test
 	public void testLoadService() {
 		JanusService testService = new ServiceForTest(server);
-		ServicesLocator.load(testService);
+		Locator.load(testService);
 
-		assertEquals(testService, ServicesLocator.getService(ServiceForTest.class, server));
-		assertEquals(testService, ServicesLocator.getService("ServiceForTest", server));
+		assertEquals(testService, Locator.getService(ServiceForTest.class, server));
+		assertEquals(testService, Locator.getService("ServiceForTest", server));
 		assertEquals(testService,
-				ServicesLocator.getService("ServiceForTest@" + Integer.toHexString(server.hashCode())));
+				Locator.getService("ServiceForTest@" + Integer.toHexString(server.hashCode())));
 	}
 
 }

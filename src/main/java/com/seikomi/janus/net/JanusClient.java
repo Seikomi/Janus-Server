@@ -72,7 +72,7 @@ public class JanusClient implements NetworkApp {
 	 * @return the command port
 	 */
 	public int getCommandPort() {
-		return 3008;
+		return clientProperties.getCommandPort();
 	}
 
 }
