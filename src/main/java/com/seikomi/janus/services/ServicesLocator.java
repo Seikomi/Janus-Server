@@ -3,9 +3,14 @@ package com.seikomi.janus.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.seikomi.janus.net.JanusServer;
 
 public class ServicesLocator {
+	static final Logger LOGGER = LoggerFactory.getLogger(ServicesLocator.class);
+	
 	private static Map<String, JanusService> services = new HashMap<>();
 	
 	private ServicesLocator() {
@@ -15,7 +20,7 @@ public class ServicesLocator {
 	protected static void load(JanusService service) {
 		String serviceIdentifier = service.getClass().getSimpleName() + "@"
 				+ Integer.toHexString(service.server.hashCode());
-		System.out.println("Registered the service: " + serviceIdentifier);
+		LOGGER.trace("Registered the service: " + serviceIdentifier);
 		services.put(serviceIdentifier, service);
 	}
 

@@ -15,7 +15,7 @@ import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 import com.seikomi.janus.net.properties.TestUtils;
 
-public class ExitTest {
+public class UploadTest {
 	
 	private final static URL PROPERTIES_URL = TestUtils.getServerPropertiesURL();
 
@@ -37,11 +37,19 @@ public class ExitTest {
 	}
 
 	@Test
-	public void testExitCommandWithNoArgs() {
-		CommandsFactory.addCommand("#EXIT", new Exit(server));
-		String[] returns = CommandsFactory.executeCommand("#EXIT");
-		assertArrayEquals(new String[] { "#EXIT OK" }, returns);
+	public void testDownloadCommandWithNoArgs() {
+		CommandsFactory.addCommand("#UPLOAD", new Upload(server));
+		String[] returns = CommandsFactory.executeCommand("#UPLOAD");
+		assertArrayEquals(new String[] { "#UPLOAD NO FILES TO RECEIVE" }, returns);
 
+	}
+	
+	@Test
+	public void testDownloadCommandWithArgs() {
+		CommandsFactory.addCommand("#UPLOAD", new Upload(server));
+		String[] returns = CommandsFactory.executeCommand("#UPLOAD testFile");
+		assertArrayEquals(new String[] { "#UPLOAD STARTED" }, returns);
+		//TODO test transfert OK
 	}
 
 }

@@ -19,10 +19,18 @@ public class Download extends JanusCommand {
 
 	@Override
 	public String[] apply(String[] args) {
+		String[] responce;
+		
 		DataTranferService downloadService = Locator.getService(DataTranferService.class, server);
-		downloadService.send(args);
+		
+		if (args == null || args.length == 0) {
+			responce = new String[] { "#DOWNLOAD NO FILES TO SEND" };
+		} else {
+			downloadService.send(args);
+			responce = new String[] { "#DOWNLOAD STARTED" };
+		}
 
-		return new String[] { "#DOWNLOAD STARTED" };
+		return responce;
 	}
 
 }

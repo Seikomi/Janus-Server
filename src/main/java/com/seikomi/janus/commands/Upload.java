@@ -19,10 +19,18 @@ public class Upload extends JanusCommand {
 
 	@Override
 	public String[] apply(String[] args) {
-		DataTranferService downloadService = Locator.getService(DataTranferService.class, server);
-		downloadService.receive(args);
+		String[] responce;
 
-		return new String[] { "#UPLOAD STARTED" };
+		DataTranferService uploadService = Locator.getService(DataTranferService.class, server);
+
+		if (args == null || args.length == 0) {
+			responce = new String[] { "#UPLOAD NO FILES TO RECEIVE" };
+		} else {
+			uploadService.receive(args);
+			responce = new String[] { "#UPLOAD STARTED" };
+		}
+
+		return responce;
 	}
 
 }
