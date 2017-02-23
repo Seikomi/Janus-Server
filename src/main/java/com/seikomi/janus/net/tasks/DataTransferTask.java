@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.slf4j.Logger;
@@ -56,8 +57,14 @@ public class DataTransferTask extends JanusTask {
 	public DataTransferTask(JanusServer server, String[] fileNames, boolean isDownloadTransfert) {
 		super(server);
 
-		for (int i = 0; i < fileNames.length; i++) {
-			this.filesDeque.push(new Pair<String, Boolean>(fileNames[i], isDownloadTransfert));
+		this.filesDeque = new ArrayDeque<>();
+		
+		if (fileNames == null || fileNames.length == 0) {
+			LOGGER.debug("No files to send are defined.");
+		} else {
+			for (int i = 0; i < fileNames.length; i++) {
+				this.filesDeque.push(new Pair<String, Boolean>(fileNames[i], isDownloadTransfert));
+			}
 		}
 	}
 

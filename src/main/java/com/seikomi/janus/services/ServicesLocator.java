@@ -20,7 +20,9 @@ public class ServicesLocator {
 	protected static void load(JanusService service) {
 		String serviceIdentifier = service.getClass().getSimpleName() + "@"
 				+ Integer.toHexString(service.server.hashCode());
+
 		LOGGER.debug("Registered the service: " + serviceIdentifier);
+
 		services.put(serviceIdentifier, service);
 	}
 
