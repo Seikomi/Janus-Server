@@ -56,6 +56,10 @@ public class LocatorTest {
 		assertEquals(testService, Locator.getService("ServiceForTest", server));
 		assertEquals(testService,
 				Locator.getService("ServiceForTest@" + Integer.toHexString(server.hashCode())));
+		
+		Locator.clear();
+		
+		assertEquals(null, Locator.getService(ServiceForTest.class, server));
 	}
 
 }
