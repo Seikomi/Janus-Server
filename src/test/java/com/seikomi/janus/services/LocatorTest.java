@@ -57,5 +57,13 @@ public class LocatorTest {
 		assertEquals(testService,
 				Locator.getService("ServiceForTest@" + Integer.toHexString(server.hashCode())));
 	}
+	
+	public class ServiceForTest extends JanusService {
+
+		public ServiceForTest(JanusServer server) {
+			super(server);
+		}
+
+	}
 
 }

@@ -14,7 +14,9 @@ import org.junit.Test;
 import com.seikomi.janus.JanusServerInDebug;
 import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.properties.JanusServerProperties;
-
+/**
+ * Functional tests ? or just change ports number ? that is the question.
+ */
 public class JanusServerTest {
 
 	private final static URL PROPERTIES_URL = JanusServerTest.class.getResource("serverTest.properties");

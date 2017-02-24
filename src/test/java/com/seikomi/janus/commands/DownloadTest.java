@@ -49,7 +49,6 @@ public class DownloadTest {
 		CommandsFactory.addCommand("#DOWNLOAD", new Download(server));
 		String[] returns = CommandsFactory.executeCommand("#DOWNLOAD testFile");
 		assertArrayEquals(new String[] { "#DOWNLOAD STARTED" }, returns);
-		//TODO test transfert OK
 	}
 
 }
