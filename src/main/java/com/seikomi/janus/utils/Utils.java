@@ -60,22 +60,24 @@ public final class Utils {
 
 		return isInteger;
 	}
-	
+
 	/**
-	 * Converts a {@code long} variable in the corresponding array of bytes.
+	 * Converts a {@code byte[]} variable in the corresponding long.
 	 * 
-	 * @param i
-	 *            the {@code long} variable to convert.
-	 * @return the corresponding array of bytes (8 bytes)
+	 * @param b
+	 *            the {@code byte[]} variable to convert.
+	 * @return the corresponding long
 	 */
 	public static long bytesToLong(byte[] b) {
 		ByteBuffer buffer = ByteBuffer.wrap(b);
 		return buffer.getLong();
 	}
-	
+
 	/**
 	 * Converts a {@code long} variable in the corresponding array of bytes.
-	 * @param i the {@code long} variable to convert.
+	 * 
+	 * @param i
+	 *            the {@code long} variable to convert.
 	 * @return the corresponding array of bytes (8 bytes)
 	 */
 	public static byte[] longToBytes(long i) {
@@ -97,15 +99,34 @@ public final class Utils {
 		private final L left;
 		private final R right;
 
+		/**
+		 * Construct a new Pair of two object one on the left, the other on the
+		 * right.
+		 * 
+		 * @param left
+		 *            the object on the left
+		 * @param right
+		 *            the object on the right
+		 */
 		public Pair(L left, R right) {
 			this.left = left;
 			this.right = right;
 		}
 
+		/**
+		 * Gets the left object.
+		 * 
+		 * @return the left object
+		 */
 		public L getLeft() {
 			return left;
 		}
 
+		/**
+		 * Gets the right object.
+		 * 
+		 * @return the right object
+		 */
 		public R getRight() {
 			return right;
 		}

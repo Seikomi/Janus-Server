@@ -2,7 +2,6 @@ package com.seikomi.janus.net.properties;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Properties;
 
 /**
  * This class is the main set of properties use to initialize the Janus server.
