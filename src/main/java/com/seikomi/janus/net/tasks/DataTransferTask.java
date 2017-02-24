@@ -58,7 +58,7 @@ public class DataTransferTask extends JanusTask {
 		super(server);
 
 		this.filesDeque = new ArrayDeque<>();
-		
+
 		if (fileNames == null || fileNames.length == 0) {
 			LOGGER.debug("No files to send are defined.");
 		} else {
@@ -191,6 +191,14 @@ public class DataTransferTask extends JanusTask {
 		}
 	}
 
+	/**
+	 * Adds files in transfer queue.
+	 * 
+	 * @param fileNames
+	 *            the files names
+	 * @param isDownloadTransfert
+	 *            {@code true} to dowload files, {@code false} to upload files
+	 */
 	public void addFiles(String[] fileNames, boolean isDownloadTransfert) {
 		for (int i = 0; i < fileNames.length; i++) {
 			filesDeque.push(new Pair<String, Boolean>(fileNames[i], isDownloadTransfert));
