@@ -1,5 +1,7 @@
 package com.seikomi.janus.net.tasks;
 
+import java.util.Observable;
+
 import com.seikomi.janus.net.NetworkApp;
 
 /**
@@ -15,7 +17,7 @@ import com.seikomi.janus.net.NetworkApp;
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public abstract class JanusTask implements Runnable {
+public abstract class JanusTask extends Observable implements Runnable {
 
 	protected NetworkApp networkApp;
 	private volatile Thread currentThread;
@@ -61,6 +63,11 @@ public abstract class JanusTask implements Runnable {
 	/** End the {@code loop()} method in interrupting the current thread. */
 	protected void endLoop() {
 		currentThread.interrupt();
+	}
+	
+	protected void informObservers() {
+		setChanged();
+		notifyObservers();
 	}
 
 }

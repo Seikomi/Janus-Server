@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,9 @@ public class AskConnectionTask extends JanusTask {
 
 	private Socket commandSocket;
 	private DataInputStream in;
-	private Scanner scanner;
+	private DataOutputStream out;
+
+	private boolean firstLoop;
 
 	/**
 	 * Construct a new connection task for a janus client.
@@ -41,14 +42,14 @@ public class AskConnectionTask extends JanusTask {
 	 */
 	@Override
 	public void beforeLoop() {
+		firstLoop = true;
 		try {
 			commandSocket = new Socket("localhost", ((JanusClient) networkApp).getCommandPort());
 			in = new DataInputStream(commandSocket.getInputStream());
-			scanner = new Scanner(System.in);
+			out = new DataOutputStream(commandSocket.getOutputStream());
 		} catch (IOException e) {
 			LOGGER.error("An error occurs during connection establishment", e);
 		}
-
 	}
 
 	/**
@@ -58,24 +59,21 @@ public class AskConnectionTask extends JanusTask {
 	@Override
 	public void loop() {
 		try {
+			if (firstLoop) {
+				informObservers();
+				firstLoop = false;
+			}
+			
 			String message = in.readUTF();
 			LOGGER.info(message);
-
-			String command = scanner.next();
-
-			DataOutputStream dataOutputStream = new DataOutputStream(commandSocket.getOutputStream());
-			dataOutputStream.writeUTF(command);
-			dataOutputStream.flush();
-
 		} catch (IOException e) {
 			LOGGER.error("An error occurs during connection establishment", e);
 		}
-
 	}
 
 	@Override
 	public void afterLoop() {
-		// Nothing to do.
+		// Nothing to do
 	}
 
 	/**
@@ -91,6 +89,16 @@ public class AskConnectionTask extends JanusTask {
 	 */
 	public void stop() {
 		endLoop();
+	}
+
+	/**
+	 * Gets the output stream used by the command socket. To provide a direct
+	 * access to the server.
+	 * 
+	 * @return the output stream
+	 */
+	public DataOutputStream getOutputStream() {
+		return out;
 	}
 
 }

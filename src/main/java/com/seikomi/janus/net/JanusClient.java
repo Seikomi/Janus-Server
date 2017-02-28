@@ -1,5 +1,8 @@
 package com.seikomi.janus.net;
 
+import java.io.IOException;
+import java.util.Observer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +76,15 @@ public class JanusClient implements NetworkApp {
 	 */
 	public int getCommandPort() {
 		return (clientProperties == null ? 3008 : clientProperties.getCommandPort());
+	}
+
+	public void sendCommand(String command) throws IOException {
+		askConnectionTask.getOutputStream().writeUTF(command);
+		askConnectionTask.getOutputStream().flush();
+	}
+	
+	public void addObserver(Observer observer) {
+		askConnectionTask.addObserver(observer);
 	}
 
 }
