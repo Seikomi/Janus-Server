@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Paths;
+import java.util.Observer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +93,7 @@ public class JanusClient implements NetworkApp {
 
 	public void executeCommand(String command) {
 		try {
-			DataOutputStream out = new DataOutputStream(askConnectionTask.getCommandSocket().getOutputStream());
+			DataOutputStream out = new DataOutputStream(askConnectionTask.getOutputStream());
 
 			out.writeUTF(command);
 			out.flush();
@@ -164,7 +165,7 @@ public class JanusClient implements NetworkApp {
 					} catch (IOException e) {
 						LOGGER.error("An error occurs during the reception of data", e);
 					}
-					
+
 					dataSocket.close();
 				}
 			}
@@ -174,9 +175,13 @@ public class JanusClient implements NetworkApp {
 		}
 	}
 
-	public boolean isStarted() {
-		return askConnectionTask.isWaiting();
-		
+	public void sendCommand(String command) throws IOException {
+		askConnectionTask.getOutputStream().writeUTF(command);
+		askConnectionTask.getOutputStream().flush();
+	}
+
+	public void addObserver(Observer observer) {
+		askConnectionTask.addObserver(observer);
 	}
 
 }
