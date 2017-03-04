@@ -16,7 +16,13 @@ public abstract class JanusCommand {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(JanusCommand.class);
 	protected JanusServer server;
 
-	public JanusCommand(JanusServer server) {
+	/**
+	 * Constructor for inheritance purpose.
+	 * 
+	 * @param server
+	 *            the server to pass in argument in each inherited constructor
+	 */
+	protected JanusCommand(JanusServer server) {
 		this.server = server;
 	}
 

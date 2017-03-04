@@ -12,7 +12,13 @@ import com.seikomi.janus.services.Locator;
  *
  */
 public class Upload extends JanusCommand {
-
+	
+	/**
+	 * Construct a new upload command associated with the server.
+	 * 
+	 * @param server
+	 *            the server
+	 */
 	public Upload(JanusServer server) {
 		super(server);
 	}

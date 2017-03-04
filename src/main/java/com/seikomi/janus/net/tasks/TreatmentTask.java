@@ -67,6 +67,7 @@ public class TreatmentTask extends JanusTask {
 			}
 
 			commandeExecute(receivingMessage);
+			LOGGER.trace("Command receive : " + receivingMessage);
 		} catch (IOException e) {
 			LOGGER.info("One client has logged out");
 			LOGGER.trace("STACKTRACE: ", e);
@@ -99,10 +100,12 @@ public class TreatmentTask extends JanusTask {
 		String[] commandReturnState = CommandsFactory.executeCommand(receivingMessage);
 		if (commandReturnState == null) {
 			sendMessage(receivingMessage);
+			LOGGER.trace("Message send (echo) : " + receivingMessage);
 		} else if ("#EXIT OK".equals(commandReturnState[0])) {
 			endLoop();
 		} else {
 			sendMessage(commandReturnState[0]);
+			LOGGER.trace("Message send (command result) : " + commandReturnState[0]);
 		}
 	}
 
@@ -112,7 +115,7 @@ public class TreatmentTask extends JanusTask {
 	 * @param message
 	 *            the message to send
 	 */
-	private void sendMessage(String message) {
+	public void sendMessage(String message) {
 		try {
 			out.writeUTF(message);
 			out.flush();

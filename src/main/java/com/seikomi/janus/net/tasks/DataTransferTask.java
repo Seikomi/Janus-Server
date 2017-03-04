@@ -96,7 +96,7 @@ public class DataTransferTask extends JanusTask {
 				if (fileToSend.exists()) {
 					sendFile(fileToSend);
 				} else {
-					LOGGER.debug(file + " not found");
+					LOGGER.debug(file.getLeft() + " not found");
 				}
 			} else {
 				receiveFile(file.getLeft());

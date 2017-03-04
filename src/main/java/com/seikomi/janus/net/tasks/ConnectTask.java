@@ -26,6 +26,8 @@ public class ConnectTask extends JanusTask {
 	private ServerSocket serverCommandSocket;
 	private List<TreatmentTask> treatmentTasks;
 
+	private boolean isWaiting = false;
+
 	/**
 	 * Construct a connect task associated with the Janus server in arguments.
 	 * Instantiate a server socket on command port.
@@ -54,10 +56,12 @@ public class ConnectTask extends JanusTask {
 	protected void loop() {
 		try {
 			LOGGER.info("Waiting for connect request...");
+			isWaiting  = true;
 
 			// The method blocks until a connection is made
 			Socket commandSocket = serverCommandSocket.accept();
 			LOGGER.info("One client is connect");
+			isWaiting = false;
 
 			TreatmentTask treatmentTask = new TreatmentTask((JanusServer) networkApp, commandSocket);
 			treatmentTasks.add(treatmentTask);
@@ -94,5 +98,11 @@ public class ConnectTask extends JanusTask {
 			treatmentTask.endLoop();
 		}
 	}
+
+	public boolean isWaiting() {
+		return isWaiting;
+	}
+	
+	
 
 }

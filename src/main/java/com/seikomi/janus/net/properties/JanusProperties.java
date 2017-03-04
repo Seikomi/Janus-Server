@@ -102,7 +102,6 @@ public class JanusProperties {
 
 			boolean containsKeys = properties.containsKey(propertyName);
 			boolean isInteger = Utils.isInteger(property);
-			boolean isString = property != null && !property.isEmpty();
 
 			switch (defaultProperty) {
 			case COMMAND_PORT:
@@ -111,13 +110,11 @@ public class JanusProperties {
 				break;
 
 			default:
-				valid &= containsKeys && isString;
+				// Nothing to do
 				break;
 			}
 
 		}
-		
-		// TODO Test user properties
 
 		return valid;
 	}

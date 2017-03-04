@@ -25,6 +25,8 @@ public class AskConnectionTask extends JanusTask {
 	private DataInputStream in;
 	private Scanner scanner;
 
+	private boolean isWaiting = false;
+
 	/**
 	 * Construct a new connection task for a janus client.
 	 * 
@@ -60,8 +62,11 @@ public class AskConnectionTask extends JanusTask {
 		try {
 			String message = in.readUTF();
 			LOGGER.info(message);
-
+			
+			isWaiting  = true;
 			String command = scanner.next();
+			
+			isWaiting = false;
 
 			DataOutputStream dataOutputStream = new DataOutputStream(commandSocket.getOutputStream());
 			dataOutputStream.writeUTF(command);
@@ -92,5 +97,15 @@ public class AskConnectionTask extends JanusTask {
 	public void stop() {
 		endLoop();
 	}
+
+	public Socket getCommandSocket() {
+		return commandSocket;
+	}
+
+	public boolean isWaiting() {
+		return isWaiting;
+	}
+	
+	
 
 }

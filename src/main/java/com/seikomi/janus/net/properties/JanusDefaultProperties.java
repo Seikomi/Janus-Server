@@ -9,7 +9,7 @@ package com.seikomi.janus.net.properties;
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
-public enum JanusDefaultProperties{
+public enum JanusDefaultProperties {
 	/** Command port property representation : {@code commandPort=3008} */
 	COMMAND_PORT("commandPort", "3008"),
 	/** Data port property representation : {@code dataPort=3009} */
@@ -48,12 +48,13 @@ public enum JanusDefaultProperties{
 	protected String getPropertyValue() {
 		return propertyValue;
 	}
-	
+
 	/**
 	 * Gets the defaults property value parsed in signed decimal integer.
 	 * 
 	 * @return the defaults property value as signed decimal integer.
-	 * @throws NumberFormatException if the string does not contain a parsable integer.
+	 * @throws NumberFormatException
+	 *             if the string does not contain a parsable integer.
 	 * @see {@link Integer#parseInt(String)}
 	 */
 	protected int getPropertyValueAsInt() {

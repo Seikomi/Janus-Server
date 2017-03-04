@@ -61,10 +61,14 @@ public class UtilsTest {
 		Pair<Boolean, String> pairTest = new Pair<Boolean, String>(true, "test");
 		Pair<Boolean, String> pairEquals = new Pair<Boolean, String>(true, "test");
 		Pair<Boolean, String> pairNotEqual = new Pair<Boolean, String>(false, "tset");
+		String banane = "banane";
 		
 		assertEquals(pairEquals, pairTest);
 		assertNotEquals(pairNotEqual, pairTest);
+		assertNotEquals(banane, pairTest);
+		assertNotEquals(pairTest, banane);
 		
+		assertEquals(pairTest.getLeft().hashCode() ^ pairTest.getRight().hashCode(), pairTest.hashCode());
 	}
 
 }

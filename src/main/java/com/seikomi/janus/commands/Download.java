@@ -13,6 +13,12 @@ import com.seikomi.janus.services.Locator;
  */
 public class Download extends JanusCommand {
 
+	/**
+	 * Construct a new download command associated with the server.
+	 * 
+	 * @param server
+	 *            the server
+	 */
 	public Download(JanusServer server) {
 		super(server);
 	}
@@ -20,9 +26,9 @@ public class Download extends JanusCommand {
 	@Override
 	public String[] apply(String[] args) {
 		String[] responce;
-		
+
 		DataTranferService downloadService = Locator.getService(DataTranferService.class, server);
-		
+
 		if (args == null || args.length == 0) {
 			responce = new String[] { "#DOWNLOAD NO FILES TO SEND" };
 		} else {

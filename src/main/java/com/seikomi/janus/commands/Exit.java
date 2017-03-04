@@ -11,6 +11,12 @@ import com.seikomi.janus.net.JanusServer;
  */
 public class Exit extends JanusCommand {
 
+	/**
+	 * Construct a new exit command associated with the server.
+	 * 
+	 * @param server
+	 *            the server
+	 */
 	public Exit(JanusServer server) {
 		super(server);
 	}
