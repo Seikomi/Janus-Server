@@ -3,7 +3,7 @@ package com.seikomi.janus.commands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.net.NetworkApp;
 
 /**
  * This is the abstract class of commands. If you want to create a new command
@@ -14,10 +14,10 @@ import com.seikomi.janus.net.JanusServer;
  */
 public abstract class JanusCommand {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(JanusCommand.class);
-	protected JanusServer server;
+	protected NetworkApp networkApp;
 
-	public JanusCommand(JanusServer server) {
-		this.server = server;
+	public JanusCommand(NetworkApp networkApp) {
+		this.networkApp = networkApp;
 	}
 
 	/**

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.net.NetworkApp;
 
 /**
  * This static class is use to locate the service instance attach to a Janus
@@ -36,7 +36,7 @@ public class Locator {
 	 */
 	public static void load(JanusService service) {
 		String serviceIdentifier = service.getClass().getSimpleName() + "@"
-				+ Integer.toHexString(service.server.hashCode());
+				+ Integer.toHexString(service.networkApp.hashCode());
 		LOGGER.debug("Register the service in the locator : " + serviceIdentifier);
 		services.put(serviceIdentifier, service);
 	}
@@ -54,12 +54,11 @@ public class Locator {
 	 *            use
 	 * @return the service associated with the Janus server
 	 */
-	public static <T extends JanusService> T getService(Class<T> serviceClass, JanusServer associatedJanusServer) {
-		return serviceClass.cast(getService(serviceClass.getSimpleName(), associatedJanusServer));
+	public static <T extends JanusService> T getService(Class<T> serviceClass, NetworkApp associatedNetworkApp) {
+		return serviceClass.cast(getService(serviceClass.getSimpleName(), associatedNetworkApp));
 	}
 
 	/**
-	 * Gets the service of {@code fullServiceName} name. The
 	 * {@code fullServiceName} is an identifier with the following form :
 	 * [serviceClassName]@[server instance hash code]
 	 * 
@@ -82,8 +81,8 @@ public class Locator {
 	 *            use
 	 * @return the service associated with the Janus server
 	 */
-	public static JanusService getService(String serviceName, JanusServer associatedJanusServer) {
-		return services.get(serviceName + "@" + Integer.toHexString(associatedJanusServer.hashCode()));
+	public static JanusService getService(String serviceName, NetworkApp associatedNetworkApp) {
+		return services.get(serviceName + "@" + Integer.toHexString(associatedNetworkApp.hashCode()));
 	}
 
 	/**
