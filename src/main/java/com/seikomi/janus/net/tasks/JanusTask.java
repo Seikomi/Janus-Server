@@ -5,7 +5,8 @@ import java.util.Observable;
 import com.seikomi.janus.net.NetworkApp;
 
 /**
- * Abstract class of Janus task, witch is a thread that run the three following abstract methods :
+ * Abstract class of Janus task, witch is a thread that run the three following
+ * abstract methods :
  * <ul>
  * <li>{@code beforeLoop()}, executes before the {@code loop()} method ;</li>
  * <li>{@code Loop()}, executes until the current thread is interrupted,
@@ -64,7 +65,8 @@ public abstract class JanusTask extends Observable implements Runnable {
 	protected void endLoop() {
 		currentThread.interrupt();
 	}
-	
+
+	/** Inform the observer of the changes of state in Janus task. */
 	protected void informObservers() {
 		setChanged();
 		notifyObservers();

@@ -5,7 +5,7 @@ import org.junit.Test;
 public class ClientLauncherTest {
 	
 	@Test
-	public void testClientLauncher() {
+	public void testClientLauncher() throws InterruptedException {
 		ClientLauncher.main(null);
 	}
 

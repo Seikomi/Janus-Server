@@ -1,6 +1,6 @@
 package com.seikomi.janus.services;
 
-import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.net.NetworkApp;
 
 /**
  * Abstract class of Janus services. A Janus service must be registered in the
@@ -12,7 +12,7 @@ import com.seikomi.janus.net.JanusServer;
  */
 public abstract class JanusService {
 
-	protected JanusServer server;
+	protected NetworkApp networkApp;
 
 	/**
 	 * Constructor to link a Janus service with an instance of a Janus serer.
@@ -20,8 +20,8 @@ public abstract class JanusService {
 	 * @param server
 	 *            the Janus server
 	 */
-	public JanusService(JanusServer server) {
-		this.server = server;
+	public JanusService(NetworkApp networkApp) {
+		this.networkApp = networkApp;
 	}
 
 }

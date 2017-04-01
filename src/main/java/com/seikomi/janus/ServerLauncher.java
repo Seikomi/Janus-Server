@@ -35,21 +35,21 @@ public class ServerLauncher implements Observer {
 			LOGGER.error("An unknown error occurs during the reading of Janus server properties file", e);
 		}
 		
-		/*************************************************************
-		 * Functional test to up the coverage without Thread.sleep() * 
-		 *************************************************************/
-		
-		// TODO must be deleted for release
-		try {
-			client = new JanusClient(new JanusClientProperties(propertiesFilePah));
-			client.start();
-			LOGGER.info("Janus client started and ask connection on ports " + client.getCommandPort()
-					+ " to send commands");
-		} catch (IOException e) {
-			LOGGER.error("An unknown error occurs during the reading of Janus client properties file", e);
-		}
-		
-		client.addObserver(this);
+//		/*************************************************************
+//		 * Functional test to up the coverage without Thread.sleep() * 
+//		 *************************************************************/
+//		
+//		// TODO must be deleted for release
+//		try {
+//			client = new JanusClient(new JanusClientProperties(propertiesFilePah));
+//			client.start();
+//			LOGGER.info("Janus client started and ask connection on ports " + client.getCommandPort()
+//					+ " to send commands");
+//		} catch (IOException e) {
+//			LOGGER.error("An unknown error occurs during the reading of Janus client properties file", e);
+//		}
+//		
+//		client.addObserver(this);
 	}
 
 	/**

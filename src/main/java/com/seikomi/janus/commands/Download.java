@@ -26,8 +26,8 @@ public class Download extends JanusCommand {
 	@Override
 	public String[] apply(String[] args) {
 		String[] responce;
-
-		DataTranferService downloadService = Locator.getService(DataTranferService.class, server);
+		
+		DataTranferService downloadService = Locator.getService(DataTranferService.class, networkApp);
 
 		if (args == null || args.length == 0) {
 			responce = new String[] { "#DOWNLOAD NO FILES TO SEND" };

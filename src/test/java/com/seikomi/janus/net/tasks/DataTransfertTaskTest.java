@@ -66,25 +66,11 @@ public class DataTransfertTaskTest {
 
 	@Test
 	public void testDownloadTransfertBeetweenClientAndServer() throws InterruptedException {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
 		client.executeCommand("#DOWNLOAD LICENSE");
 	}
 	
 	@Test
 	public void testUploadTransfertBeetweenClientAndServer() throws InterruptedException {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
 		client.executeCommand("#UPLOAD LICENSE");
 	}
 

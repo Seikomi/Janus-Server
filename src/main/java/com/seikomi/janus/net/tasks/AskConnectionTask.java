@@ -24,8 +24,6 @@ public class AskConnectionTask extends JanusTask {
 	private DataInputStream in;
 	private DataOutputStream out;
 
-	private boolean firstLoop;
-
 	/**
 	 * Construct a new connection task for a janus client.
 	 * 
@@ -42,11 +40,14 @@ public class AskConnectionTask extends JanusTask {
 	 */
 	@Override
 	public void beforeLoop() {
-		firstLoop = true;
 		try {
 			commandSocket = new Socket("localhost", ((JanusClient) networkApp).getCommandPort());
 			in = new DataInputStream(commandSocket.getInputStream());
 			out = new DataOutputStream(commandSocket.getOutputStream());
+
+			String message = in.readUTF();
+			LOGGER.info(message);
+
 		} catch (IOException e) {
 			LOGGER.error("An error occurs during connection establishment", e);
 		}
@@ -59,21 +60,24 @@ public class AskConnectionTask extends JanusTask {
 	@Override
 	public void loop() {
 		try {
-			if (firstLoop) {
-				informObservers();
-				firstLoop = false;
-			}
-			
+			informObservers();
+
 			String message = in.readUTF();
 			LOGGER.info(message);
+
 		} catch (IOException e) {
 			LOGGER.error("An error occurs during connection establishment", e);
+			endLoop();
 		}
 	}
 
 	@Override
 	public void afterLoop() {
-		// Nothing to do
+		try {
+			commandSocket.close();
+		} catch (IOException e) {
+			LOGGER.error("An error occurs when closing the command socket", e);
+		}
 	}
 
 	/**
@@ -90,7 +94,7 @@ public class AskConnectionTask extends JanusTask {
 	public void stop() {
 		endLoop();
 	}
-	
+
 	/**
 	 * Gets the output stream used by the command socket. To provide a direct
 	 * access to the server.

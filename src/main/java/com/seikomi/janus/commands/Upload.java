@@ -27,7 +27,7 @@ public class Upload extends JanusCommand {
 	public String[] apply(String[] args) {
 		String[] responce;
 
-		DataTranferService uploadService = Locator.getService(DataTranferService.class, server);
+		DataTranferService uploadService = Locator.getService(DataTranferService.class, networkApp);
 
 		if (args == null || args.length == 0) {
 			responce = new String[] { "#UPLOAD NO FILES TO RECEIVE" };
