@@ -1,19 +1,7 @@
 package com.seikomi.janus.net.tasks;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,6 +17,11 @@ import com.seikomi.janus.net.properties.JanusProperties;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 import com.seikomi.janus.utils.JanusPropertiesFileGenerator;
 
+/**
+ * Functional test.
+ * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
+ *
+ */
 public class DataTransfertTaskTest {
 
 	private JanusServer server;
@@ -49,24 +42,27 @@ public class DataTransfertTaskTest {
 
 		serverProperties = (JanusServerProperties) propertiesFiles[0];
 		server = new JanusServerInDebug(serverProperties);
-
+		server.start();
+		
 		clientProperties = (JanusClientProperties) propertiesFiles[1];
 		client = new JanusClient(clientProperties);
-
-		server.start();	
 		client.start();
+		
+		client.addObserver(new ClientObserver());
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		client.stop();
-		server.stop();		
+		server.stop();
 		
+		client = null;
+		server = null;
 	}
 
 	@Test
 	public void testDownloadTransfertBeetweenClientAndServer() throws InterruptedException {
-		client.executeCommand("#DOWNLOAD LICENSE");
+		client.executeCommand("#Test LICENSE");
 	}
 	
 	@Test

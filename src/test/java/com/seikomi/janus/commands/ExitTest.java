@@ -40,7 +40,7 @@ public class ExitTest {
 
 	@Test
 	public void testExitCommandWithNoArgs() {
-		CommandsFactory.addCommand("#EXIT", new Exit(server));
+		CommandsFactory.addCommand(new Exit(), "#EXIT", server);
 		String[] returns = CommandsFactory.executeCommand("#EXIT");
 		assertArrayEquals(new String[] { "#EXIT OK" }, returns);
 

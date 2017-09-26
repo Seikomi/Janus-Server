@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import com.seikomi.janus.net.NetworkApp;
+
 /**
  * This class is the factory of commands use by Janus server. She stores a set
  * of commands and execute the command ask by a client. This factory need to be
@@ -29,7 +31,10 @@ public class CommandsFactory {
 	 * @param command
 	 *            the command
 	 */
-	public static void addCommand(String name, JanusCommand command) {
+	public static void addCommand(JanusCommand command, String name, NetworkApp associatedNetworkApp) {
+		command.name = name;
+		command.networkApp = associatedNetworkApp;
+		
 		commands.put(name, command);
 	}
 

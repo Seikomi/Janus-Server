@@ -30,7 +30,7 @@ public class ClientLauncher implements Observer {
 			client = new JanusClient(clientProperties);
 			client.start();
 			LOGGER.info("Janus client started and connecting to the port " + client.getCommandPort() + " for commands");
-			client.addObserver(this);
+			client.addObserver(this); //FIXME synchronization !!!
 
 			scanner = new Scanner(System.in);
 

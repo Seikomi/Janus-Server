@@ -22,7 +22,7 @@ public class CommandFactoryTest {
 
 	private JanusServer server;
 	private JanusServerProperties serverProperties;
-	
+
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
@@ -52,13 +52,13 @@ public class CommandFactoryTest {
 		final String commandTestName = "#CMD_TEST";
 		final String[] commandTestReturns = new String[] { "TEST" };
 
-		CommandsFactory.addCommand(commandTestName, new JanusCommand(server) {
+		CommandsFactory.addCommand(new JanusCommand() {
 
 			@Override
 			public String[] apply(String[] args) {
 				return commandTestReturns;
 			}
-		});
+		}, commandTestName, server);
 
 		String[] returns = CommandsFactory.executeCommand(commandTestName);
 		assertArrayEquals(commandTestReturns, returns);
@@ -72,14 +72,14 @@ public class CommandFactoryTest {
 		final String arg2 = "world";
 		final String[] commandTestReturns = new String[] { "TEST2", arg1, arg2 };
 
-		CommandsFactory.addCommand(commandTestName, new JanusCommand(server) {
+		CommandsFactory.addCommand(new JanusCommand() {
 
 			@Override
 			public String[] apply(String[] args) {
 				assertEquals(2, args.length);
 				return new String[] { commandTestReturns[0], arg1, arg2 };
 			}
-		});
+		}, commandTestName, server);
 
 		String[] returns = CommandsFactory.executeCommand(commandTestName + " " + arg1 + " " + arg2);
 		assertArrayEquals(commandTestReturns, returns);

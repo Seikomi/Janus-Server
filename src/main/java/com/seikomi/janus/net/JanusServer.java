@@ -64,9 +64,9 @@ public abstract class JanusServer implements NetworkApp {
 	 * server.
 	 */
 	private void loadJanusContext() {
-		CommandsFactory.addCommand("#EXIT", new Exit(this));
-		CommandsFactory.addCommand("#DOWNLOAD", new Download(this));
-		CommandsFactory.addCommand("#UPLOAD", new Upload(this));
+		CommandsFactory.addCommand(new Exit(), "#EXIT", this);
+		CommandsFactory.addCommand(new Download(), "#DOWNLOAD", this);
+		CommandsFactory.addCommand(new Upload(), "#UPLOAD", this);
 
 		Locator.load(new DataTranferService(this));
 	}

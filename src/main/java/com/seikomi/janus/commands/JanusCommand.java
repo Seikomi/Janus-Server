@@ -9,22 +9,15 @@ import com.seikomi.janus.net.NetworkApp;
  * This is the abstract class of commands. If you want to create a new command
  * you must extend this class.
  * 
+ * <p><b>TODO This documentation is outdated</b></p>
  * @author Nicolas SYMPHORIEN (nicolas.symphorien@gmail.com)
  *
  */
 public abstract class JanusCommand {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(JanusCommand.class);
-	protected NetworkApp networkApp;
-
-	/**
-	 * Constructor for inheritance purpose.
-	 * 
-	 * @param server
-	 *            the server to pass in argument in each inherited constructor
-	 */
-	public JanusCommand(NetworkApp networkApp) {
-		this.networkApp = networkApp;
-	}
+	
+	protected NetworkApp networkApp;	
+	protected String name;
 
 	/**
 	 * Run the command with {@code args} like arguments.

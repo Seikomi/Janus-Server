@@ -40,7 +40,7 @@ public class DownloadTest {
 
 	@Test
 	public void testDownloadCommandWithNoArgs() {
-		CommandsFactory.addCommand("#DOWNLOAD", new Download(server));
+		CommandsFactory.addCommand(new Download(), "#DOWNLOAD", server);
 		String[] returns = CommandsFactory.executeCommand("#DOWNLOAD");
 		assertArrayEquals(new String[] { "#DOWNLOAD NO FILES TO SEND" }, returns);
 
@@ -48,7 +48,7 @@ public class DownloadTest {
 	
 	@Test
 	public void testDownloadCommandWithArgs() {
-		CommandsFactory.addCommand("#DOWNLOAD", new Download(server));
+		CommandsFactory.addCommand(new Download(), "#DOWNLOAD", server);
 		String[] returns = CommandsFactory.executeCommand("#DOWNLOAD testFile");
 		assertArrayEquals(new String[] { "#DOWNLOAD STARTED" }, returns);
 	}

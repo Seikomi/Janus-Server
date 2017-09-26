@@ -39,6 +39,8 @@ public abstract class JanusTask extends Observable implements Runnable {
 
 		beforeLoop();
 		while (!currentThread.isInterrupted()) {
+			//Event ev = getCurrentEvent()
+			// ev.getType()
 			loop();
 		}
 		afterLoop();
