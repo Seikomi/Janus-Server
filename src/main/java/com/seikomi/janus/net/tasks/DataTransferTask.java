@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.net.properties.JanusServerProperties;
 import com.seikomi.janus.utils.Utils;
 import com.seikomi.janus.utils.Utils.Pair;
 
@@ -54,8 +55,7 @@ public class DataTransferTask extends JanusTask {
 	 *            flag to indicate the direction of the data transfer :
 	 *            {@code true} for sending and {@code false} to receiving.
 	 */
-	public DataTransferTask(JanusServer server, String[] fileNames, boolean isDownloadTransfert) {
-		super(server);
+	public DataTransferTask(String[] fileNames, boolean isDownloadTransfert) {
 
 		this.filesDeque = new ArrayDeque<>();
 
@@ -74,7 +74,7 @@ public class DataTransferTask extends JanusTask {
 	@Override
 	protected void beforeLoop() {
 		try {
-			dataServerSocket = new ServerSocket(((JanusServer) networkApp).getDataPort());
+			dataServerSocket = new ServerSocket(JanusServerProperties.readProperties().getDataPort());
 			Socket dataSocket = dataServerSocket.accept();
 			out = new BufferedOutputStream(dataSocket.getOutputStream(), BUFFER_SIZE);
 			in = new BufferedInputStream(dataSocket.getInputStream(), BUFFER_SIZE);
@@ -86,9 +86,10 @@ public class DataTransferTask extends JanusTask {
 	/**
 	 * Sends each files if they exists on file system or receive files from a
 	 * client.
+	 * @throws IOException 
 	 */
 	@Override
-	protected void loop() {
+	protected void loop() throws IOException {
 		if (!filesDeque.isEmpty()) {
 			Pair<String, Boolean> file = filesDeque.pop();
 			if (file.getRight()) {
@@ -158,9 +159,10 @@ public class DataTransferTask extends JanusTask {
 	 * 
 	 * @param path
 	 *            the file path
+	 * @throws IOException 
 	 */
-	private void receiveFile(String path) {
-		String directory = ((JanusServer) networkApp).getProperties().getProperty("serverFileRootDirectory");
+	private void receiveFile(String path) throws IOException {
+		String directory = JanusServerProperties.readProperties().getProperties().getProperty("serverFileRootDirectory");
 		File file = new File(directory + path);
 
 		try (final BufferedOutputStream fileOutputStream = new BufferedOutputStream(new FileOutputStream(file),

@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.seikomi.janus.net.JanusServer;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 
 /**
@@ -17,16 +18,23 @@ import com.seikomi.janus.net.properties.JanusServerProperties;
 public class ServerLauncher {
 	static final Logger LOGGER = LoggerFactory.getLogger(ServerLauncher.class);
 
-	private JanusServerInDebug server;
+	private JanusServer server;
 
 	public ServerLauncher() {
-		Path propertiesFilePah = Paths.get("server.properties");
+		Path propertiesFilePath = Paths.get("server.properties");
 		try {
-			JanusServerProperties serverProperties = new JanusServerProperties(propertiesFilePah);
-			server = new JanusServerInDebug(serverProperties);
+			JanusServerProperties.loadProperties(propertiesFilePath);
+			server = new JanusServer() {
+
+				@Override
+				protected void loadContext() {
+					// Nothing to load
+				}
+				
+			};
 			server.start();
-			LOGGER.info("Janus server started and listening on ports : " + server.getCommandPort()
-					+ " for commands and " + server.getDataPort() + " for data");
+			LOGGER.info("Janus server started and listening on ports : " + JanusServerProperties.readProperties().getCommandPort()
+					+ " for commands and " + JanusServerProperties.readProperties().getDataPort() + " for data");
 		} catch (IOException e) {
 			LOGGER.error("An unknown error occurs during the reading of Janus server properties file", e);
 		}

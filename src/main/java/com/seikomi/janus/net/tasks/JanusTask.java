@@ -1,5 +1,6 @@
 package com.seikomi.janus.net.tasks;
 
+import java.io.IOException;
 import java.util.Observable;
 
 import com.seikomi.janus.net.NetworkApp;
@@ -20,18 +21,8 @@ import com.seikomi.janus.net.NetworkApp;
  */
 public abstract class JanusTask extends Observable implements Runnable {
 
-	protected NetworkApp networkApp;
+	private NetworkApp networkApp;
 	private volatile Thread currentThread;
-
-	/**
-	 * Instantiate a new runnable Janus task with the server in argument.
-	 * 
-	 * @param networkApp
-	 *            the network application where the task must be run.
-	 */
-	public JanusTask(NetworkApp networkApp) {
-		this.networkApp = networkApp;
-	}
 
 	@Override
 	public void run() {
@@ -41,7 +32,12 @@ public abstract class JanusTask extends Observable implements Runnable {
 		while (!currentThread.isInterrupted()) {
 			//Event ev = getCurrentEvent()
 			// ev.getType()
-			loop();
+			try {
+				loop();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		afterLoop();
 	}
@@ -60,8 +56,9 @@ public abstract class JanusTask extends Observable implements Runnable {
 	/**
 	 * Method that repeat until the current thread is interrupted, note that
 	 * method can be an infinite loop if no blocking method is used inside.
+	 * @throws Exception 
 	 */
-	protected abstract void loop();
+	protected abstract void loop() throws Exception;
 
 	/** End the {@code loop()} method in interrupting the current thread. */
 	protected void endLoop() {

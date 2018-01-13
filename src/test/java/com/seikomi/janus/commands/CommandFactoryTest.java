@@ -14,14 +14,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.seikomi.janus.JanusServerInDebug;
 import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.net.properties.JanusProperties;
 import com.seikomi.janus.net.properties.JanusServerProperties;
 
 public class CommandFactoryTest {
 
 	private JanusServer server;
-	private JanusServerProperties serverProperties;
+	private JanusProperties serverProperties;
 
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -29,8 +29,14 @@ public class CommandFactoryTest {
 	@Before
 	public void setUp() throws Exception {
 		Path serverPropertiesPath = Paths.get(temporaryFolder.getRoot().getPath() + "serverTest.properties");
-		serverProperties = new JanusServerProperties(serverPropertiesPath);
-		server = new JanusServerInDebug(serverProperties);
+		JanusServerProperties.loadProperties(serverPropertiesPath);
+		server = new JanusServer() {
+			@Override
+			protected void loadContext() {
+				//Nothing to do
+			}
+			
+		};
 	}
 
 	@After

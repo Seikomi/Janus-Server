@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.seikomi.janus.net.JanusClient;
 import com.seikomi.janus.net.properties.JanusClientProperties;
+import com.seikomi.janus.net.properties.JanusServerProperties;
 
 /**
  * Main class of Janus client.
@@ -27,6 +28,7 @@ public class ClientLauncher implements Observer {
 		Path propertiesFilePah = Paths.get("client.properties");
 		try {
 			JanusClientProperties clientProperties = new JanusClientProperties(propertiesFilePah);
+			JanusServerProperties.loadProperties(Paths.get("client.properties"));
 			client = new JanusClient(clientProperties);
 			client.start();
 			LOGGER.info("Janus client started and connecting to the port " + client.getCommandPort() + " for commands");

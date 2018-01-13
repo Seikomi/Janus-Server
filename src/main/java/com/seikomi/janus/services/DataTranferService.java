@@ -31,7 +31,7 @@ public class DataTranferService extends JanusService {
 	 */
 	public void send(String[] fileNames) {
 		if (dataTransfertTask == null) {
-			dataTransfertTask = new DataTransferTask((JanusServer) networkApp, fileNames, true);
+			dataTransfertTask = new DataTransferTask(fileNames, true);
 			startTask();
 		} else {
 			dataTransfertTask.addFiles(fileNames, true);
@@ -46,7 +46,7 @@ public class DataTranferService extends JanusService {
 	 */
 	public void receive(String[] fileNames) {
 		if (dataTransfertTask == null) {
-			dataTransfertTask = new DataTransferTask((JanusServer) networkApp, fileNames, false);
+			dataTransfertTask = new DataTransferTask(fileNames, false);
 			startTask();
 		} else {
 			dataTransfertTask.addFiles(fileNames, false);

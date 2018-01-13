@@ -40,8 +40,7 @@ public class TreatmentTask extends JanusTask {
 	 * @throws IOException
 	 *             if an I/O error occurs
 	 */
-	public TreatmentTask(JanusServer server, Socket commandSocket) throws IOException {
-		super(server);
+	public TreatmentTask(Socket commandSocket) throws IOException {
 		this.commandSocket = commandSocket;
 		this.in = new DataInputStream(commandSocket.getInputStream());
 		this.out = new DataOutputStream(commandSocket.getOutputStream());
@@ -69,8 +68,8 @@ public class TreatmentTask extends JanusTask {
 			commandeExecute(receivingMessage);
 			LOGGER.trace("Command receive : " + receivingMessage);
 		} catch (IOException e) {
-			LOGGER.info("One client has logged out");
-			LOGGER.trace("STACKTRACE: ", e);
+			LOGGER.info("One client has been logged out");
+			LOGGER.trace("IOException handle, see this stack trace for details: ", e);
 			endLoop();
 		}
 	}

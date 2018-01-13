@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.seikomi.janus.net.JanusServer;
+import com.seikomi.janus.net.properties.JanusServerProperties;
 
 /**
  * Janus task that handle all client connection, it is based on one-thread-per-client
@@ -37,9 +38,8 @@ public class ConnectTask extends JanusTask {
 	 * @throws IOException
 	 *             if an I/O errors occurs
 	 */
-	public ConnectTask(JanusServer server) throws IOException {
-		super(server);
-		this.serverCommandSocket = new ServerSocket(server.getCommandPort());
+	public ConnectTask() throws IOException {
+		this.serverCommandSocket = new ServerSocket(JanusServerProperties.readProperties().getCommandPort());
 		treatmentTasks = new ArrayList<>();
 	}
 
@@ -63,7 +63,7 @@ public class ConnectTask extends JanusTask {
 			LOGGER.info("One client is connect");
 			isWaiting = false;
 
-			TreatmentTask treatmentTask = new TreatmentTask((JanusServer) networkApp, commandSocket);
+			TreatmentTask treatmentTask = new TreatmentTask(commandSocket);
 			treatmentTasks.add(treatmentTask);
 			Thread treatmentThread = new Thread(treatmentTask, "treatmentThread");
 			treatmentThread.start();

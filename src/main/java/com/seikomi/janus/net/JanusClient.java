@@ -48,7 +48,7 @@ public class JanusClient implements NetworkApp {
 	 */
 	@Override
 	public void start() {
-		askConnectionTask = new AskConnectionTask(this);
+		askConnectionTask = new AskConnectionTask();
 
 		Thread askConnectionThread = new Thread(askConnectionTask, "AskConnectionThread");
 		askConnectionThread.start();

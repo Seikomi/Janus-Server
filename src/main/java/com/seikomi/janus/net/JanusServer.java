@@ -30,7 +30,6 @@ import com.seikomi.janus.services.Locator;
 public abstract class JanusServer implements NetworkApp {
 	private static final Logger LOGGER = LoggerFactory.getLogger(JanusServer.class);
 
-	private JanusServerProperties serverProperties;
 	private ConnectTask connectTask;
 
 	/**
@@ -40,8 +39,7 @@ public abstract class JanusServer implements NetworkApp {
 	 * @param serverProperties
 	 *            the server {@code .properties} file
 	 */
-	public JanusServer(JanusServerProperties serverProperties) {
-		this.serverProperties = serverProperties;
+	public JanusServer() {
 		loadContext();
 		loadJanusContext();
 
@@ -54,14 +52,14 @@ public abstract class JanusServer implements NetworkApp {
 			LOGGER.trace("Service :");
 			for (Entry<String, JanusService> entry : Locator.getServices().entrySet()) {
 				LOGGER.trace("\t" + entry.getKey() + " : " + entry.getValue().getClass().getSimpleName());
+				//TODO get skill
 			}
 
 		}
 	}
 
 	/**
-	 * Load defaults commands and services needed to run properly the Janus
-	 * server.
+	 * Load defaults commands and services needed to run properly the Janus server.
 	 */
 	private void loadJanusContext() {
 		CommandsFactory.addCommand(new Exit(), "#EXIT", this);
@@ -77,13 +75,13 @@ public abstract class JanusServer implements NetworkApp {
 	@Override
 	public void start() {
 		try {
-			connectTask = new ConnectTask(this);
+			connectTask = new ConnectTask();
 
 			Thread connectTread = new Thread(connectTask, "ConnectThread");
 			connectTread.start();
 
-			LOGGER.debug("Janus server start on port " + getCommandPort() + " for command and on port " + getDataPort()
-					+ " for data");
+			LOGGER.debug("Janus server start on port " + JanusServerProperties.readProperties().getCommandPort()
+					+ " for command and on port " + JanusServerProperties.readProperties().getDataPort() + " for data");
 		} catch (IOException e) {
 			LOGGER.error("An unknown error occurs during the starting of Janus server", e);
 		}
@@ -122,33 +120,6 @@ public abstract class JanusServer implements NetworkApp {
 	 * from any part of the application.
 	 */
 	protected abstract void loadContext();
-
-	/**
-	 * Gets the command port store in {@code .properties} file.
-	 * 
-	 * @return the command port of this server
-	 */
-	public int getCommandPort() {
-		return serverProperties.getCommandPort();
-	}
-
-	/**
-	 * Gets the data port store in {@code .properties} file.
-	 * 
-	 * @return the data port of this server
-	 */
-	public int getDataPort() {
-		return serverProperties.getDataPort();
-	}
-
-	/**
-	 * Gets the properties file associated with this Janus server.
-	 * 
-	 * @return the properties file
-	 */
-	public Properties getProperties() {
-		return serverProperties.getProperties();
-	}
 
 	public boolean isStarted() {
 		return connectTask.isWaiting();
